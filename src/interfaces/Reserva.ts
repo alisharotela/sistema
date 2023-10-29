@@ -19,11 +19,11 @@ export interface ReservaCreate {
 
 export interface FiltroReserva {
   idReserva?: number;
-  fechaInicio?: Date;
-  fechaFin?: Date;
+  fechaInicio?: string;
+  fechaFin?: string;
   fecha?: string;
   hora?: string;
-  paciente?: Paciente;
-  doctor?: Paciente;
+  paciente?: number;
+  doctor?: number;
   estado?: string;
 }

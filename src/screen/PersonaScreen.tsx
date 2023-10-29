@@ -21,6 +21,7 @@ import { ListItem } from "../components/ListItem";
 import { Paciente } from "../interfaces/Paciente";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { EditIcon } from "../icons/EditIcon";
+import { useQuery } from "@tanstack/react-query";
 
 const PersonaScreen = ({
   animatedValue,
@@ -46,18 +47,24 @@ const PersonaScreen = ({
 
   const fabStyle = { [animateFrom]: 16 };
 
-  const [personas, setPersonas] = useState<Paciente[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const getPacientes = async () => {
-    setIsLoading(true);
-    const pacientes = await PacienteService.getPacientes();
-    setIsLoading(false);
-    setPersonas(pacientes.lista);
-    console.log(personas);
-  };
-  useEffect(() => {
-    getPacientes();
-  }, []);
+  // const [personas, setPersonas] = useState<Paciente[]>([]);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const getPacientes = async () => {
+  //   setIsLoading(true);
+  //   const pacientes = await PacienteService.getPacientes();
+  //   setIsLoading(false);
+  //   setPersonas(pacientes.lista);
+  //   console.log(personas);
+  // };
+  // useEffect(() => {
+  //   getPacientes();
+  // }, []);
+
+  const {data:personas, isLoading, refetch} = useQuery({
+    queryKey: ['personas'],
+    queryFn: ()=>PacienteService.getPacientes(),
+
+  })
 
   return (
     <SafeAreaView style={styles.container}>
@@ -65,7 +72,7 @@ const PersonaScreen = ({
         onScroll={onScroll}
         refreshControl={
           <RefreshControl
-            onRefresh={() => getPacientes()}
+            onRefresh={() => refetch()}
             refreshing={isLoading}
           />
         }
@@ -74,7 +81,7 @@ const PersonaScreen = ({
           marginBottom: 100,
         }}
       >
-        {personas.map((persona) => (
+        {personas?.lista?.map((persona) => (
           <ListItem
             text1={`#${persona.idPersona} ${persona.nombre}`}
             text2={persona.apellido}
@@ -88,7 +95,7 @@ const PersonaScreen = ({
                     createTwoButtonAlert({
                       onConfirm: async () => {
                         await PacienteService.delPaciente(persona.idPersona);
-                        getPacientes();
+                        refetch();
                       },
                     })
                   }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { SelectInput } from "../components/SelectInput";
+import { SelectInput } from "./SelectInput";
 import PacienteService from "../services/PacienteService";
 
 export function DoctorSelect({ value, onChange }) {

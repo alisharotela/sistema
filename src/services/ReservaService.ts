@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Reserva, ReservaCreate } from "../interfaces/Reserva";
+import { FiltroReserva, Reserva, ReservaCreate } from "../interfaces/Reserva";
 import PacienteService from "./PacienteService";
 
 class ReservaService {
@@ -11,8 +11,9 @@ class ReservaService {
     return reservas.find((element) => element.idReserva === id);
   }
 
-  async getReservas(filtros?: any) {
-    const reservas = JSON.parse(await AsyncStorage.getItem("reservas")) || [];
+  async getReservas(filtros?: FiltroReserva) {
+    const reservas: Reserva[] =
+      JSON.parse(await AsyncStorage.getItem("reservas")) || [];
 
     if (!filtros) {
       return {
@@ -20,27 +21,57 @@ class ReservaService {
         totalDatos: reservas.length,
       };
     }
+    console.log({ filtros });
 
     let reservasFiltradas = reservas;
     for (const key in filtros) {
       if (!filtros[key]) continue;
       if (key === "fechaInicio") {
         reservasFiltradas = reservasFiltradas.filter(
-          (element) => element.fecha >= filtros[key]
+          (element) => new Date(element.fecha) >= new Date(filtros[key])
         );
         continue;
       }
       if (key === "fechaFin") {
         reservasFiltradas = reservasFiltradas.filter(
-          (element) => element.fecha <= filtros[key]
+          (element) => new Date(element.fecha) <= new Date(filtros[key])
         );
         continue;
       }
-      reservasFiltradas = reservasFiltradas.filter(
-        (element) => element[key] === filtros[key]
-      );
+      if (key === "fecha") {
+        reservasFiltradas = reservasFiltradas.filter(
+          (element) =>
+            isSameDate(element.fecha,
+              filtros[key]
+            )
+        );
+        continue;
+      }
+      if (key === "hora") {
+        reservasFiltradas = reservasFiltradas.filter(
+          (element) => element.hora === filtros[key]
+        );
+        continue;
+      }
+      if (key === "paciente") {
+        reservasFiltradas = reservasFiltradas.filter(
+          (element) => element.paciente.idPersona === filtros[key]
+        );
+        continue;
+      }
+      if (key === "doctor") {
+        reservasFiltradas = reservasFiltradas.filter(
+          (element) => element.doctor.idPersona === filtros[key]
+        );
+        continue;
+      }
+      if (key === "estado") {
+        reservasFiltradas = reservasFiltradas.filter(
+          (element) => element.estado === filtros[key]
+        );
+        continue;
+      }
     }
-
     return {
       lista: reservasFiltradas,
       totalDatos: reservas.length,
@@ -109,3 +140,11 @@ export default new ReservaService();
 type GetReservaProps = {
   estado?: "Activa" | "Cancelada" | "Finalizada";
 };
+
+const isSameDate = (strDate1, strDate2)=>{
+  const date1 = new Date(strDate1)
+  const date2 = new Date(strDate2)
+  return date1.getDate()==date2.getDate() 
+  && date1.getMonth()==date2.getMonth() 
+  && date1.getFullYear()==date2.getFullYear()
+}

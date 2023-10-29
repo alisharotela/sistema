@@ -12,7 +12,7 @@ import { useState } from "react";
 import { SelectInput } from "../components/SelectInput";
 import PacienteService from "../services/PacienteService";
 import { useNavigation } from "@react-navigation/native";
-import { FormButton } from "./FormButton";
+import { FormButton } from "../components/FormButton";
 
 const initialValues = {
   nombre: "",

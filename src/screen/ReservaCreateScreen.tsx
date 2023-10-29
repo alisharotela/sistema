@@ -7,19 +7,20 @@ import {
   TextBase,
   View,
 } from "react-native";
-import { Button, Text } from "react-native-paper";
+import { Button } from "react-native-paper";
 import { TextInput } from "../components/TextInput";
 import { SelectInput } from "../components/SelectInput";
 import PacienteService from "../services/PacienteService";
 import { useNavigation } from "@react-navigation/native";
 import { Reserva } from "../interfaces/Reserva";
-import { DoctorSelect } from "./DoctorSelect";
-import { PacienteSelect } from "./PacienteSelect";
+import { DoctorSelect } from "../components/DoctorSelect";
+import { PacienteSelect } from "../components/PacienteSelect";
 import ReservaService from "../services/ReservaService";
-import { FormButton } from "./FormButton";
+import { FormButton } from "../components/FormButton";
+import { DatePicker } from "../components/DatePicker";
 
 const initialValues = {
-  fecha: "27/08/2024",
+  fecha: new Date().toISOString(),
   hora: "",
   paciente: "",
   doctor: undefined,
@@ -30,7 +31,6 @@ export default function ReservaCreateScreen() {
   const { values, setValues, handleChange, handleSubmit } = useFormik({
     initialValues,
     onSubmit: async (values) => {
-      console.log({ values });
       await ReservaService.createReserva(values);
       navigation.goBack();
     },
@@ -50,10 +50,10 @@ export default function ReservaCreateScreen() {
     >
       <ScrollView>
         <View style={styles.container}>
-          <TextInput
+          <DatePicker
             value={values.fecha}
-            label="fecha(cambiar a lib)"
-            onChangeText={handleChange("fecha")}
+            onChange={(value) => setValues({ ...values, fecha: value })}
+            label="Fecha"
           />
           <SelectInput
             value={values.hora}
