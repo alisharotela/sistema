@@ -2,10 +2,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import HomeScreen from "../screen/HomeScreen";
-import CategoriaScreen from "../screen/CategoriaScreen";
 import FichaScreen from "../screen/FichaScreen";
 import PersonaStack from "./PersonaStack";
 import ReservaStack from "./ReservaStack";
+import CategoriaStack from "./CategoriaStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,10 +19,8 @@ export default function RootNav() {
         <Tab.Screen
           name="Tab Personas"
           options={{
-            headerShown: false,
             tabBarLabel: "Personas",
 
-            // unmountOnBlur: true,
           }}
           component={PersonaStack}
         />
@@ -30,9 +28,7 @@ export default function RootNav() {
           name="Tab Reservas"
           component={ReservaStack}
           options={{
-            headerShown: false,
             tabBarLabel: "Reservas",
-            // unmountOnBlur: true,
           }}
         />
         <Tab.Screen
@@ -42,7 +38,7 @@ export default function RootNav() {
         />
         <Tab.Screen
           name="Tab Categorias"
-          component={CategoriaScreen}
+          component={CategoriaStack}
           options={{ tabBarLabel: "Categorias" }}
         />
         <Tab.Screen
