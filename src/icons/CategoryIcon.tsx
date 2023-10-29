@@ -2,10 +2,10 @@ import React from "react";
 import { View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
-export const CategoryIcon = () => {
+export const CategoryIcon = ({ width, height, fill = "#000" }) => {
   return (
     <View>
-      <Svg width={800} height={800} viewBox="0 0 24 24" fill="none">
+      <Svg width={width} height={height} viewBox="0 0 24 24" fill={fill}>
         <Path
           d="M17 10H19C21 10 22 9 22 7V5C22 3 21 2 19 2H17C15 2 14 3 14 5V7C14 9 15 10 17 10Z"
           stroke="#292D32"

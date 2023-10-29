@@ -2,10 +2,10 @@ import React from "react";
 import { View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
-export const CheckFileIcon = () => {
+export const CheckFileIcon = ({ width, height, fill = "#000" }) => {
   return (
     <View>
-      <Svg width={800} height={800} viewBox="0 0 24 24" fill="none">
+      <Svg width={width} height={height} viewBox="0 0 24 24" fill={fill}>
         <Path
           fillRule="evenodd"
           clipRule="evenodd"
