@@ -21,7 +21,7 @@ class ReservaService {
         totalDatos: reservas.length,
       };
     }
-    console.log({ filtros });
+    // console.log({ filtros });
 
     let reservasFiltradas = reservas;
     for (const key in filtros) {

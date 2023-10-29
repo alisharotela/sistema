@@ -37,7 +37,7 @@ export const ReservaSubHeader = ({ filters, setFilters }) => {
         },
       });
     }
-    console.log("showFilter", showFilter);
+    // console.log("showFilter", showFilter);
   }, [showFilter]);
 
   const { colors } = useTheme();
