@@ -22,6 +22,7 @@ import { Paciente } from "../interfaces/Paciente";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { EditIcon } from "../icons/EditIcon";
 import { useQuery } from "@tanstack/react-query";
+import { listadatos } from "../interfaces/Datos";
 
 const PersonaScreen = ({
   animatedValue,
@@ -60,29 +61,34 @@ const PersonaScreen = ({
   //   getPacientes();
   // }, []);
 
-  const {data:personas, isLoading, refetch} = useQuery({
-    queryKey: ['personas'],
-    queryFn: ()=>PacienteService.getPacientes(),
-
-  })
+  const {
+    data: personas,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["personas"],
+    queryFn: () => PacienteService.getPacientes(),
+    initialData: { lista: [], totalDatos: 0 } as listadatos<Paciente>,
+  });
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
         onScroll={onScroll}
         refreshControl={
-          <RefreshControl
-            onRefresh={() => refetch()}
-            refreshing={isLoading}
-          />
+          <RefreshControl onRefresh={() => refetch()} refreshing={isLoading} />
         }
         contentContainerStyle={{
           marginVertical: 16,
           marginBottom: 100,
         }}
       >
-        {personas?.lista?.map((persona) => (
+        {!isLoading && personas.lista?.length == 0 && (
+          <Text style={{ textAlign: "center" }}>No hay personas</Text>
+        )}
+        {personas.lista?.map((persona) => (
           <ListItem
+            key={persona.idPersona}
             text1={`#${persona.idPersona} ${persona.nombre}`}
             text2={persona.apellido}
             text3={persona.email}
@@ -120,13 +126,8 @@ const PersonaScreen = ({
         label={"Nueva persona"}
         extended={isExtended}
         onPress={() => navigation.navigate("Nueva persona")}
-        // onPress={async () => {
-        //   const pacientes = PacienteService.getPacientes();
-        //   console.log(pacientes);
-        // }}
         visible={visible}
         animateFrom={"right"}
-        iconMode={"static"}
         style={[styles.fabStyle, style, fabStyle]}
       />
     </SafeAreaView>

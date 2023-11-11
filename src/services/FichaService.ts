@@ -1,4 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Ficha, FichaCreate, FiltroFicha } from "../interfaces/Ficha";
+import PacienteService from "./PacienteService";
+import CategoriaService from "./CategoriaService";
+import ReservaService from "./ReservaService";
+import { isSameDate } from "../utils";
 
 class FichaService {
   async getFicha(id) {
@@ -6,8 +11,9 @@ class FichaService {
     return fichas.find((element) => element.idFicha === id);
   }
 
-  async getFichas(filtros) {
-    const fichas = JSON.parse(await AsyncStorage.getItem("fichas")) || [];
+  async getFichas(filtros: FiltroFicha) {
+    const fichas = (JSON.parse(await AsyncStorage.getItem("fichas")) ||
+      []) as Ficha[];
 
     if (!filtros) {
       return {
@@ -16,7 +22,7 @@ class FichaService {
       };
     }
 
-    let fichasFiltradas = fichas.slice(); // clone the array
+    let fichasFiltradas = fichas;
     for (const key in filtros) {
       if (!filtros[key]) continue;
 
@@ -32,9 +38,30 @@ class FichaService {
         );
         continue;
       }
-      fichasFiltradas = fichasFiltradas.filter(
-        (element) => element[key] === filtros[key]
-      );
+      if (key === "fecha") {
+        fichasFiltradas = fichasFiltradas.filter((element) =>
+          isSameDate(element.fecha, filtros[key])
+        );
+        continue;
+      }
+      if (key === "paciente") {
+        fichasFiltradas = fichasFiltradas.filter(
+          (element) => element.paciente.idPersona === filtros[key]
+        );
+        continue;
+      }
+      if (key === "doctor") {
+        fichasFiltradas = fichasFiltradas.filter(
+          (element) => element.doctor.idPersona === filtros[key]
+        );
+        continue;
+      }
+      if (key === "categoria") {
+        fichasFiltradas = fichasFiltradas.filter(
+          (element) => element.categoria.idCategoria === filtros[key]
+        );
+        continue;
+      }
     }
 
     return {
@@ -55,14 +82,31 @@ class FichaService {
     return ficha;
   }
 
-  async createFicha(p) {
+  async createFicha(p: FichaCreate) {
     const fichas = JSON.parse(await AsyncStorage.getItem("fichas")) || [];
-    p.idFicha = fichas.length + 1;
-    fichas.push(p);
+    const idFicha = fichas.length + 1;
+    const paciente = await PacienteService.getPaciente(p.paciente);
+    const doctor = await PacienteService.getPaciente(p.doctor);
+    const categoria = await CategoriaService.getCategoria(p.categoria);
+    const reserva = await ReservaService.getReserva(p.reserva);
+
+    const newFicha: Ficha = {
+      idFicha,
+      paciente,
+      doctor,
+      fecha: p.fecha,
+      motivo_consulta: p.motivo_consulta,
+      diagnostico: p.diagnostico,
+      categoria,
+      reserva,
+    };
+    fichas.push(newFicha);
+    console.log({ newFicha });
+
     await AsyncStorage.setItem("fichas", JSON.stringify(fichas));
   }
 
-  async updateFicha(p) {
+  async updateFicha(p: Ficha) {
     const fichas = JSON.parse(await AsyncStorage.getItem("fichas")) || [];
     const arrayId = fichas.findIndex(
       (element) => element.idFicha === p.idFicha
@@ -73,6 +117,10 @@ class FichaService {
     fichas[arrayId] = p;
     await AsyncStorage.setItem("fichas", JSON.stringify(fichas));
     return true;
+  }
+
+  async deleteAll() {
+    await AsyncStorage.removeItem("fichas");
   }
 }
 

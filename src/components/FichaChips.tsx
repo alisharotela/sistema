@@ -5,15 +5,12 @@ import PacienteService from "../services/PacienteService";
 import { Paciente } from "../interfaces/Paciente";
 import { useQuery } from "@tanstack/react-query";
 import { formatDate } from "../utils";
-import { Categoria } from "../interfaces/Categoria";
-import CategoriaService from "../services/CategoriaService";
 
-export const ReservaChips = ({ data }) => {
+export const FichaChips = ({ data }) => {
   return (
     <ScrollView horizontal style={{ flexGrow: 0 }}>
       <ChipDoctor idDoctor={data.doctor} />
       <ChipPaciente idPaciente={data.paciente} />
-      <ChipCategoria idCategoria={data.categoria} />
       {data.fechaInicio && (
         <Chip icon="filter" style={styles.chip}>
           Ini:{""}
@@ -46,23 +43,6 @@ const ChipPaciente = ({ idPaciente }) => {
       {paciente && (
         <Chip style={styles.chip} icon="filter">
           {paciente.nombre + " " + paciente.apellido}
-        </Chip>
-      )}
-    </>
-  );
-};
-const ChipCategoria = ({ idCategoria }) => {
-  const { data: categoria } = useQuery<Categoria>({
-    queryKey: ["categoria", idCategoria],
-    queryFn: () => CategoriaService.getCategoria(idCategoria),
-    enabled: idCategoria != null,
-  });
-
-  return (
-    <>
-      {categoria && (
-        <Chip style={styles.chip} icon="filter">
-          {categoria.descripcion}
         </Chip>
       )}
     </>

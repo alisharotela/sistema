@@ -17,16 +17,11 @@ import { EditIcon } from "../icons/EditIcon";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import CategoriaService from "../services/CategoriaService";
 
-const CategoriaScreen = ({
-  visible,
-  animateFrom,
-  style,
-}) => {
+const CategoriaScreen = ({ visible, animateFrom, style }) => {
   const navigation = useNavigation<any>();
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const [isExtended, setIsExtended] = React.useState(true);
-
 
   const onScroll = ({ nativeEvent }) => {
     const currentScrollPosition =
@@ -37,21 +32,21 @@ const CategoriaScreen = ({
 
   const fabStyle = { [animateFrom]: 16 };
 
-  const { data: categorias, isLoading, refetch } = useQuery({
-    queryKey: ['categorias'],
+  const {
+    data: categorias,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["categorias"],
     queryFn: () => CategoriaService.getCategorias(),
-
-  })
+  });
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
         onScroll={onScroll}
         refreshControl={
-          <RefreshControl
-            onRefresh={() => refetch()}
-            refreshing={isLoading}
-          />
+          <RefreshControl onRefresh={() => refetch()} refreshing={isLoading} />
         }
         contentContainerStyle={{
           marginVertical: 16,
@@ -69,9 +64,12 @@ const CategoriaScreen = ({
                   onPress={() =>
                     createTwoButtonAlert({
                       onConfirm: async () => {
-                        await CategoriaService.delCategoria(categoria.idCategoria);
-                        queryClient.invalidateQueries({queryKey:['categorias']})
-                        
+                        await CategoriaService.delCategoria(
+                          categoria.idCategoria
+                        );
+                        queryClient.invalidateQueries({
+                          queryKey: ["categorias"],
+                        });
                       },
                     })
                   }
@@ -98,7 +96,6 @@ const CategoriaScreen = ({
         onPress={() => navigation.navigate("Nueva categoria")}
         visible={visible}
         animateFrom={"right"}
-        iconMode={"static"}
         style={[styles.fabStyle, style, fabStyle]}
       />
     </SafeAreaView>

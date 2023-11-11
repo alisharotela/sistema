@@ -1,13 +1,12 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Button } from "react-native-paper";
-import { styles } from "../screen/PersonaEditScreen";
 
 export function FormButton(props: {
   goBack: () => void;
   handleSubmit: () => void;
   label: string;
   cancelLabel?: string;
-  isLoading?: boolean
+  isLoading?: boolean;
 }) {
   const cancelLabel = props.cancelLabel ?? "Cancelar";
   return (
@@ -29,11 +28,20 @@ export function FormButton(props: {
         style={{
           width: "40%",
         }}
-        loading={props.isLoading??false}
-        
+        loading={props.isLoading ?? false}
       >
         {props.label}
       </Button>
     </View>
   );
 }
+
+export const styles = StyleSheet.create({
+  buttonContainer: {
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "center",
+    gap: 16,
+  },
+});

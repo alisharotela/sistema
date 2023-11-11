@@ -2,7 +2,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import HomeScreen from "../screen/HomeScreen";
-import FichaScreen from "../screen/FichaScreen";
 import PersonaStack from "./PersonaStack";
 import ReservaStack from "./ReservaStack";
 import CategoriaStack from "./CategoriaStack";
@@ -11,33 +10,36 @@ import { CheckFileIcon } from "../icons/CheckFileIcon";
 import { TicketIcon } from "../icons/TicketIcon";
 import { CategoryIcon } from "../icons/CategoryIcon";
 import { Icon, useTheme } from "react-native-paper";
+import FichaStack from "./FichaStack";
 
 const Tab = createBottomTabNavigator();
 
 export default function RootNav() {
-  const {colors} = useTheme()
+  const { colors } = useTheme();
   return (
     <NavigationContainer>
       <Tab.Navigator
+        initialRouteName="Home"
         backBehavior="initialRoute"
-        screenOptions={{ headerShown: false,
-          tabBarStyle:{
-            height:64,
-            
+        screenOptions={{
+          headerShown: false,
+
+          tabBarStyle: {
+            height: 64,
           },
           tabBarLabelStyle: {
-            fontSize:12,
-            marginBottom:8
+            fontSize: 12,
+            marginBottom: 8,
           },
           tabBarActiveBackgroundColor: colors.elevation.level2,
-          tabBarActiveTintColor: 'black'
-         }}
+          tabBarActiveTintColor: "black",
+        }}
       >
         <Tab.Screen
           name="Tab Personas"
           options={{
             tabBarLabel: "Personas",
-            tabBarIcon: () => <PersonIcon height={29} width={29} />
+            tabBarIcon: () => <PersonIcon height={29} width={29} />,
           }}
           component={PersonaStack}
         />
@@ -46,16 +48,16 @@ export default function RootNav() {
           component={ReservaStack}
           options={{
             tabBarLabel: "Reservas",
-            tabBarIcon: () => <CheckFileIcon height={24} width={24} />
+            tabBarIcon: () => <CheckFileIcon height={24} width={24} />,
           }}
         />
         <Tab.Screen
-          name="Nombre"
+          name="Home"
           component={HomeScreen}
-          options={{ tabBarLabel: "Home",
-          tabBarIcon: ()=> <Icon source='home' size={28}  />
-
-         }}
+          options={{
+            tabBarLabel: "Home",
+            tabBarIcon: () => <Icon source="home" size={28} />,
+          }}
         />
         <Tab.Screen
           name="Tab Categorias"
@@ -63,16 +65,14 @@ export default function RootNav() {
           options={{
             tabBarLabel: "Categorias",
             tabBarIcon: () => <CategoryIcon height={24} width={24} />,
-
           }}
         />
         <Tab.Screen
           name="Tab Fichas"
-          component={FichaScreen}
+          component={FichaStack}
           options={{
             tabBarLabel: "Fichas",
-            tabBarIcon: () => <TicketIcon height={24} width={24} />
-
+            tabBarIcon: () => <TicketIcon height={24} width={24} />,
           }}
         />
       </Tab.Navigator>

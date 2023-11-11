@@ -8,7 +8,8 @@ class PacienteService {
   }
 
   async getPacientes(filtros?: GetPacientesProps) {
-    const pacientes = JSON.parse(await AsyncStorage.getItem("pacientes")) || [];
+    const pacientes = (JSON.parse(await AsyncStorage.getItem("pacientes")) ||
+      []) as Paciente[];
 
     if (!filtros) {
       return {
@@ -47,7 +48,7 @@ class PacienteService {
     await AsyncStorage.setItem("pacientes", JSON.stringify(pacientes));
   }
 
-  async updatePaciente(p:Paciente) {
+  async updatePaciente(p: Paciente) {
     const pacientes = JSON.parse(await AsyncStorage.getItem("pacientes")) || [];
     const arrayId = pacientes.findIndex(
       (element) => element.idPersona === p.idPersona

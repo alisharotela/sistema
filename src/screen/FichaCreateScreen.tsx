@@ -19,22 +19,27 @@ import ReservaService from "../services/ReservaService";
 import { FormButton } from "../components/FormButton";
 import { DatePicker } from "../components/DatePicker";
 import { useQueryClient } from "@tanstack/react-query";
+import FichaService from "../services/FichaService";
+import { ReservaSelect } from "../components/ReservaSelect";
+import { CategoriaSelect } from "../components/CategoriaSelect";
 
 const initialValues = {
   fecha: new Date().toISOString(),
-  hora: "",
-  paciente: "",
+  reserva: undefined,
+  motivo_consulta: "",
+  diagnostico: "",
+  paciente: undefined,
   doctor: undefined,
-  estado: "activo",
+  categoria: undefined,
 };
-export default function ReservaCreateScreen() {
+export default function FichaCreateScreen() {
   const navigation = useNavigation();
   const queryClient = useQueryClient();
   const { values, setValues, handleChange, handleSubmit } = useFormik({
     initialValues,
     onSubmit: async (values) => {
-      await ReservaService.createReserva(values);
-      queryClient.invalidateQueries({ queryKey: ["reservas"] });
+      await FichaService.createFicha(values);
+      queryClient.invalidateQueries({ queryKey: ["fichas"] });
       navigation.goBack();
     },
   });
@@ -58,11 +63,27 @@ export default function ReservaCreateScreen() {
             onChange={(value) => setValues({ ...values, fecha: value })}
             label="Fecha"
           />
-          <SelectInput
-            value={values.hora}
-            label="Horario"
-            onChange={handleChange("hora")}
-            items={createHoras()}
+          <ReservaSelect
+            value={values.reserva}
+            onChange={(id) => {
+              setValues({ ...values, reserva: id });
+            }}
+          />
+          <TextInput
+            value={values.motivo_consulta}
+            label="Motivo de consulta"
+            onChangeText={handleChange("motivo_consulta")}
+          />
+          <TextInput
+            value={values.diagnostico}
+            label="Diagnostico"
+            onChangeText={handleChange("diagnostico")}
+          />
+          <PacienteSelect
+            value={values.paciente}
+            onChange={(id) => {
+              setValues({ ...values, paciente: id });
+            }}
           />
           <DoctorSelect
             value={values.doctor}
@@ -70,10 +91,10 @@ export default function ReservaCreateScreen() {
               setValues({ ...values, doctor: id });
             }}
           />
-          <PacienteSelect
-            value={values.paciente}
+          <CategoriaSelect
+            value={values.categoria}
             onChange={(id) => {
-              setValues({ ...values, paciente: id });
+              setValues({ ...values, categoria: id });
             }}
           />
           <FormButton

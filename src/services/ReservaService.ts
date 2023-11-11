@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FiltroReserva, Reserva, ReservaCreate } from "../interfaces/Reserva";
 import PacienteService from "./PacienteService";
+import { isSameDate } from "../utils";
 
 class ReservaService {
   async deleteAll() {
@@ -39,11 +40,8 @@ class ReservaService {
         continue;
       }
       if (key === "fecha") {
-        reservasFiltradas = reservasFiltradas.filter(
-          (element) =>
-            isSameDate(element.fecha,
-              filtros[key]
-            )
+        reservasFiltradas = reservasFiltradas.filter((element) =>
+          isSameDate(element.fecha, filtros[key])
         );
         continue;
       }
@@ -140,11 +138,3 @@ export default new ReservaService();
 type GetReservaProps = {
   estado?: "Activa" | "Cancelada" | "Finalizada";
 };
-
-const isSameDate = (strDate1, strDate2)=>{
-  const date1 = new Date(strDate1)
-  const date2 = new Date(strDate2)
-  return date1.getDate()==date2.getDate() 
-  && date1.getMonth()==date2.getMonth() 
-  && date1.getFullYear()==date2.getFullYear()
-}

@@ -3,6 +3,12 @@ import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 
 type Props = {
+  label1?: string;
+  label2?: string;
+  label3?: string;
+  label4?: string;
+  label5?: string;
+  label6?: string;
   text1?: string;
   text2?: string;
   text3?: string;
@@ -19,19 +25,55 @@ export const ListItem = ({
   text4,
   text5,
   text6,
+  label1,
+  label2,
+  label3,
+  label4,
+  label5,
+  label6,
   IconSection,
 }: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.col1}>
-        <Text style={styles.text}>{text1}</Text>
-        <Text style={styles.text}>{text2}</Text>
-        <Text style={styles.text}>{text3}</Text>
+        <View>
+          {label1 && (
+            <Text style={[styles.text, { fontWeight: "bold" }]}>{label1}</Text>
+          )}
+          <Text style={styles.text}>{text1}</Text>
+        </View>
+        <View>
+          {label2 && (
+            <Text style={[styles.text, { fontWeight: "bold" }]}>{label2}</Text>
+          )}
+          <Text style={styles.text}>{text2}</Text>
+        </View>
+        <View>
+          {label3 && (
+            <Text style={[styles.text, { fontWeight: "bold" }]}>{label3}</Text>
+          )}
+          <Text style={styles.text}>{text3}</Text>
+        </View>
       </View>
       <View style={styles.col2}>
-        <Text style={styles.text}>{text4}</Text>
-        <Text style={styles.text}>{text5}</Text>
-        <Text style={styles.text}>{text6}</Text>
+        <View>
+          {label4 && (
+            <Text style={[styles.text, { fontWeight: "bold" }]}>{label4}</Text>
+          )}
+          <Text style={styles.text}>{text4}</Text>
+        </View>
+        <View>
+          {label5 && (
+            <Text style={[styles.text, { fontWeight: "bold" }]}>{label5}</Text>
+          )}
+          <Text style={styles.text}>{text5}</Text>
+        </View>
+        <View>
+          {label6 && (
+            <Text style={[styles.text, { fontWeight: "bold" }]}>{label6}</Text>
+          )}
+          <Text style={styles.text}>{text6}</Text>
+        </View>
       </View>
       <View style={styles.col3}>{IconSection}</View>
     </View>
@@ -51,14 +93,12 @@ const styles = StyleSheet.create({
   },
   col1: {
     flex: 3,
-
     display: "flex",
     justifyContent: "center",
     gap: 8,
   },
   col2: {
     flex: 2,
-
     display: "flex",
     justifyContent: "center",
     gap: 8,

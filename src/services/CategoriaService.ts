@@ -2,10 +2,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Categoria, CategoriaCreate } from "../interfaces/Categoria";
 
 class CategoriaService {
-  async getCategoria(id) {
-    const categorias =
+  async getCategoria(id: string) {
+    const categorias: Categoria[] =
       JSON.parse(await AsyncStorage.getItem("categorias")) || [];
-    return categorias.find((element) => element.idCategoria === id);
+    return categorias.find((element) => element.idCategoria.toString() == id);
   }
 
   async getCategorias() {
@@ -40,7 +40,7 @@ class CategoriaService {
     await AsyncStorage.setItem("categorias", JSON.stringify(categorias));
   }
 
-  async updateCategoria(p:Categoria) {
+  async updateCategoria(p: Categoria) {
     const categorias =
       JSON.parse(await AsyncStorage.getItem("categorias")) || [];
     const arrayId = categorias.findIndex(

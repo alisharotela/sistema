@@ -6,8 +6,9 @@ import { FormButton } from "./FormButton";
 import { StyleSheet, View } from "react-native";
 import { getNextMonth } from "../utils";
 import { Button } from "react-native-paper";
+import { CategoriaSelect } from "./CategoriaSelect";
 
-export const ReservaFiltros = ({ onFilter, onReset, initialValues }) => {
+export const FichaFiltros = ({ onFilter, onReset, initialValues }) => {
   const [values, setValues] = useState<any>({
     ...initialValues,
     fecha: undefined,
@@ -23,6 +24,10 @@ export const ReservaFiltros = ({ onFilter, onReset, initialValues }) => {
       <PacienteSelect
         value={values.paciente}
         onChange={(value: any) => setValues({ ...values, paciente: value })}
+      />
+      <CategoriaSelect
+        value={values.categoria}
+        onChange={(value: any) => setValues({ ...values, categoria: value })}
       />
       <DatePicker
         value={values.fechaInicio}
@@ -48,6 +53,7 @@ export const ReservaFiltros = ({ onFilter, onReset, initialValues }) => {
               fechaFin: undefined,
               doctor: undefined,
               paciente: undefined,
+              categoria: undefined,
             })
           }
         >

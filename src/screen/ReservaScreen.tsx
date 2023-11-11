@@ -1,30 +1,23 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  StyleProp,
-  ViewStyle,
-  Animated,
   StyleSheet,
-  Platform,
   ScrollView,
   Text,
   SafeAreaView,
-  I18nManager,
   RefreshControl,
-  TouchableNativeFeedback,
   Alert,
   View,
 } from "react-native";
 import { AnimatedFAB, IconButton } from "react-native-paper";
 import { ListItem } from "../components/ListItem";
-import { DeleteIcon } from "../icons/DeleteIcon";
-import { EditIcon } from "../icons/EditIcon";
-import { FiltroReserva, Reserva } from "../interfaces/Reserva";
+import { Reserva } from "../interfaces/Reserva";
 import ReservaService from "../services/ReservaService";
-import { FilterModal } from "../components/FilterModal";
-import { useFormik } from "formik";
 import { formatDate } from "../utils";
-import { ReservaSubHeader } from "../components/ReservaSubHeader";
+import ReservaModal from "../components/ReservaModal";
+import { ReservaFiltros } from "../components/ReservaFiltros";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { listadatos } from "../interfaces/Datos";
 
 export const initialFilters = {
   doctor: null,
@@ -58,40 +51,50 @@ const ReservaScreen = ({
 
   const [filters, setFilters] = useState(initialFilters);
 
-  const [reservas, setReservas] = useState<Reserva[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const getReservas = async (filtros?: FiltroReserva) => {
-    setIsLoading(true);
-    const pacientes = await ReservaService.getReservas(filtros);
-    setIsLoading(false);
-    setReservas(pacientes.lista);
-  };
-  useEffect(() => {
-    getReservas(filters);
-  }, [filters]);
+  const queryClient = useQueryClient();
+
+  const {
+    data: reservas,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["reservas", filters],
+    queryFn: () => ReservaService.getReservas(filters),
+    initialData: { lista: [], totalDatos: 0 } as listadatos<Reserva>,
+  });
 
   return (
     <>
-      <SafeAreaView>
-        <ReservaSubHeader filters={filters} setFilters={setFilters} />
-      </SafeAreaView>
+      {/* <SafeAreaView></SafeAreaView> */}
       <SafeAreaView style={styles.container}>
+        <ReservaModal filters={filters}>
+          <ReservaFiltros
+            initialValues={filters}
+            onReset={() => {
+              setFilters(initialFilters);
+            }}
+            onFilter={(filters) => {
+              setFilters(filters);
+            }}
+          />
+        </ReservaModal>
         <ScrollView
           onScroll={onScroll}
           refreshControl={
             <RefreshControl
-              onRefresh={() => getReservas(filters)}
+              onRefresh={() => refetch()}
               refreshing={isLoading}
-              style={{ zIndex: 46 }}
             />
           }
           contentContainerStyle={{
-            paddingTop: 64,
             marginBottom: 100,
           }}
+          style={{ flex: 1 }}
         >
-          {/* <Button onPress={() => ReservaService.deleteAll()}>Borrar todo</Button> */}
-          {reservas.map((reserva, i) => (
+          {!isLoading && reservas.lista.length == 0 && (
+            <Text style={{ textAlign: "center" }}>No hay reservas</Text>
+          )}
+          {reservas.lista.map((reserva, i) => (
             <ListItem
               key={i}
               text4={formatDate(reserva.fecha)}
@@ -110,7 +113,9 @@ const ReservaScreen = ({
                           await ReservaService.cancelarReserva(
                             reserva.idReserva
                           );
-                          getReservas();
+                          queryClient.invalidateQueries({
+                            queryKey: ["reservas", filters],
+                          });
                         },
                       })
                     }
@@ -131,13 +136,14 @@ const ReservaScreen = ({
           onPress={() => navigation.navigate("Nueva reserva")}
           visible={visible}
           animateFrom={"right"}
-          iconMode={"static"}
           style={[styles.fabStyle, style, fabStyle]}
           onLongPress={() =>
             createTwoButtonAlert({
               onConfirm: async () => {
                 await ReservaService.deleteAll();
-                getReservas();
+                queryClient.invalidateQueries({
+                  queryKey: ["reservas", filters],
+                });
               },
             })
           }

@@ -4,6 +4,8 @@ import { PaperProvider, Portal } from "react-native-paper";
 
 import RootNav from "./src/navigation/RootNav";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 const queryClient = new QueryClient();
 
@@ -12,7 +14,11 @@ export default function Main() {
     <PaperProvider>
       <Portal>
         <QueryClientProvider client={queryClient}>
-          <RootNav />
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <BottomSheetModalProvider>
+              <RootNav />
+            </BottomSheetModalProvider>
+          </GestureHandlerRootView>
         </QueryClientProvider>
       </Portal>
     </PaperProvider>
