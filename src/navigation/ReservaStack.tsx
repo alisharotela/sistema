@@ -9,14 +9,14 @@ const Stack = createNativeStackNavigator();
 
 export default function ReservaStack() {
   return (
-    <Stack.Navigator initialRouteName="Lista de reservas">
-      <Stack.Screen name="Lista de reservas" component={ReservaScreen} />
+    <Stack.Navigator initialRouteName="Lista de productos">
+      <Stack.Screen name="Lista de productos" component={ReservaScreen} />
       <Stack.Screen
-        name="Nueva reserva"
+        name="Nuevo producto"
         component={ReservaCreateScreen}
         options={{}}
       />
-      <Stack.Screen name="Editar persona" component={PersonaEditScreen} />
+      {/* <Stack.Screen name="Editar persona" component={PersonaEditScreen} /> */}
     </Stack.Navigator>
   );
 }

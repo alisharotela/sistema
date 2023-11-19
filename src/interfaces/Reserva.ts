@@ -1,4 +1,5 @@
 import { Paciente } from "./Paciente";
+import { Categoria } from "./Categoria";
 
 export interface Reserva {
   idReserva: number;
@@ -6,15 +7,20 @@ export interface Reserva {
   hora: string;
   paciente: Paciente;
   doctor: Paciente;
-  estado: string;
+  codigo: string;
+  categoria: Categoria;
+  nombre: string;
+  precio: number;
+
 }
 export interface ReservaCreate {
   idReserva?: number;
-  fecha: string;
-  hora: string;
-  paciente: string;
-  doctor: string;
-  estado: string;
+  codigo: string;
+  categoria: string;
+  nombre: string;
+  precio: number;
+
+
 }
 
 export interface FiltroReserva {
@@ -25,5 +31,9 @@ export interface FiltroReserva {
   hora?: string;
   paciente?: number;
   doctor?: number;
-  estado?: string;
+  codigo?: string;
+  nombre?: string;
+  precio: number;
+
+
 }

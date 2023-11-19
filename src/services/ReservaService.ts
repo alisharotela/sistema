@@ -1,7 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FiltroReserva, Reserva, ReservaCreate } from "../interfaces/Reserva";
+import { Ficha, FichaCreate, FiltroFicha } from "../interfaces/Ficha";
 import PacienteService from "./PacienteService";
 import { isSameDate } from "../utils";
+import CategoriaService from "./CategoriaService";
+
+
 
 class ReservaService {
   async deleteAll() {
@@ -45,9 +49,15 @@ class ReservaService {
         );
         continue;
       }
-      if (key === "precio") {
+      if (key === "categoria") {
         reservasFiltradas = reservasFiltradas.filter(
-          (element) => element.precio === filtros[key]
+          (element) => element.categoria.idCategoria === filtros[key]
+        );
+        continue;
+      }
+      if (key === "codigo") {
+        reservasFiltradas = reservasFiltradas.filter(
+          (element) => element.codigo === filtros[key]
         );
         continue;
       }
@@ -65,7 +75,7 @@ class ReservaService {
       }
       if (key === "estado") {
         reservasFiltradas = reservasFiltradas.filter(
-          (element) => element.estado === filtros[key]
+          (element) => element.codigo === filtros[key]
         );
         continue;
       }
@@ -88,33 +98,17 @@ class ReservaService {
     return reserva;
   }
 
-  async cancelarReserva(idReserva) {
-    const reservas = JSON.parse(await AsyncStorage.getItem("reservas")) || [];
-    const arrayId = reservas.findIndex(
-      (element) => element.idReserva === idReserva
-    );
-    if (arrayId === -1) {
-      return null;
-    }
-    const reserva = reservas[arrayId];
-    reserva.estado = "Cancelada";
-    reservas[arrayId] = reserva;
-    await AsyncStorage.setItem("reservas", JSON.stringify(reservas));
-    return reserva;
-  }
-
   async createReserva(p: ReservaCreate) {
     const reserva = {} as Reserva;
     const reservas = JSON.parse(await AsyncStorage.getItem("reservas")) || [];
-    const paciente = await PacienteService.getPaciente(p.paciente);
-    const doctor = await PacienteService.getPaciente(p.doctor);
-    reserva.fecha = p.fecha;
-    reserva.precio = p.precio;
-    reserva.paciente = paciente;
-    reserva.doctor = doctor;
+    const categoria = await CategoriaService.getCategoria(p.categoria);
 
+    reserva.precio = p.precio;
+    reserva.nombre = p.nombre;
     reserva.idReserva = reservas.length + 1;
-    reserva.estado = "Activa";
+    reserva.codigo = p.codigo;
+    reserva.categoria = categoria;
+
     reservas.push(reserva);
     await AsyncStorage.setItem("reservas", JSON.stringify(reservas));
   }
