@@ -45,7 +45,7 @@ export const initialFilters = {
   fecha: new Date().toISOString(),
 };
 
-const FichaScreen = ({
+const VentaScreen = ({
   animatedValue,
   visible,
   extended,
@@ -106,18 +106,18 @@ const FichaScreen = ({
         {fichas.lista.map((ficha, i) => (
           <ListItem
             key={i}
-            label4="Fecha ficha:"
+            label4="Fecha Venta:"
             text4={formatDate(ficha.fecha)}
             label5="Categoria:"
             text5={ficha.categoria?.descripcion}
-            label6="Motivo:"
-            text6={ficha.motivo_consulta}
-            label1={"Doctor"}
+            label6="Numero de Factura:"
+            text6={ficha.numero_factura}
+            label1={"Cliente"}
             text1={ficha.doctor?.nombre + " " + ficha.doctor?.apellido}
             label2={"Paciente:"}
             text2={ficha.paciente?.nombre + " " + ficha.paciente?.apellido}
-            label3={"Diagnostico:"}
-            text3={ficha.diagnostico}
+            label3={"Cantidad:"}
+            text3={ficha.cantidad}
             IconSection={
               <>
                 <IconButton
@@ -184,7 +184,7 @@ const FichaScreen = ({
   );
 };
 
-export default FichaScreen;
+export default VentaScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -226,8 +226,8 @@ const exportData = (data) =>
             paciente: d.paciente?.nombre + " " + d.paciente?.apellido,
             doctor: d.doctor?.nombre + " " + d.doctor?.apellido,
             fecha: d.fecha,
-            motivo_consulta: d.motivo_consulta,
-            diagnostico: d.diagnostico,
+            numero_factura: d.numero_factura,
+            cantidad: d.cantidad,
             categoria: d.categoria?.descripcion,
           }))
         ),

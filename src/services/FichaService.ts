@@ -95,8 +95,8 @@ class FichaService {
       paciente,
       doctor,
       fecha: p.fecha,
-      motivo_consulta: p.motivo_consulta,
-      diagnostico: p.diagnostico,
+      numero_factura: p.numero_factura,
+      cantidad: p.cantidad,
       categoria,
       reserva,
     };

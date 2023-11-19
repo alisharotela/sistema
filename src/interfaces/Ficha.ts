@@ -7,8 +7,8 @@ export interface Ficha {
   paciente: Paciente;
   doctor: Paciente;
   fecha: string;
-  motivo_consulta: string;
-  diagnostico: string;
+  numero_factura: string;
+  cantidad: string;
   categoria: Categoria;
   reserva: Reserva;
 }
@@ -18,8 +18,8 @@ export interface FichaCreate {
   paciente: string;
   doctor: string;
   fecha: string;
-  motivo_consulta: string;
-  diagnostico: string;
+  numero_factura: string;
+  cantidad: string;
   categoria: string;
   reserva: string;
 }
@@ -30,8 +30,8 @@ export interface FiltroFicha {
   doctor?: number;
   fechaInicio?: string;
   fechaFin?: string;
-  motivo_consulta?: string;
-  diagnostico?: string;
+  numero_factura?: string;
+  cantidad?: string;
   categoria?: number;
   reserva?: number;
 }

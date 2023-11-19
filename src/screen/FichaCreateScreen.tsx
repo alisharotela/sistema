@@ -26,8 +26,8 @@ import { CategoriaSelect } from "../components/CategoriaSelect";
 const initialValues = {
   fecha: new Date().toISOString(),
   reserva: undefined,
-  motivo_consulta: "",
-  diagnostico: "",
+  numero_factura: "",
+  cantidad: "",
   paciente: undefined,
   doctor: undefined,
   categoria: undefined,
@@ -72,12 +72,12 @@ export default function FichaCreateScreen() {
           
           />
           <TextInput
-            value={values.motivo_consulta}
+            value={values.numero_factura}
             label="Motivo de consulta"
-            onChangeText={handleChange("motivo_consulta")}
+            onChangeText={handleChange("numero_factura")}
           />
           <TextInput
-            value={values.diagnostico}
+            value={values.cantidad}
             label="Cantidad"
             onChangeText={handleChange("Cantidad")}
           />

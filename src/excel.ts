@@ -141,11 +141,11 @@ const generateHTML = (data) => {
 
   <div class="info-group">
       <label>Motivo de Consulta:</label>
-      <span class="data">${ficha.motivo_consulta}</span>
+      <span class="data">${ficha.numero_factura}</span>
   </div>
   <div class="info-group">
       <label>Diagnóstico:</label>
-      <span class="data">${ficha.diagnostico}</span>
+      <span class="data">${ficha.cantidad}</span>
   </div>
   <div class="info-group">
       <label>Categoría:</label>
