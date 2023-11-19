@@ -67,7 +67,9 @@ export default function FichaCreateScreen() {
             value={values.reserva}
             onChange={(id) => {
               setValues({ ...values, reserva: id });
-            }}
+            }
+          }
+          
           />
           <TextInput
             value={values.motivo_consulta}
@@ -76,8 +78,8 @@ export default function FichaCreateScreen() {
           />
           <TextInput
             value={values.diagnostico}
-            label="Diagnostico"
-            onChangeText={handleChange("diagnostico")}
+            label="Cantidad"
+            onChangeText={handleChange("Cantidad")}
           />
           <PacienteSelect
             value={values.paciente}

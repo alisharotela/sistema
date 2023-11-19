@@ -162,9 +162,9 @@ const FichaScreen = ({
       />
       <AnimatedFAB
         icon={"plus"}
-        label={"Nueva ficha"}
+        label={"Nueva Venta"}
         extended={isExtended}
-        onPress={() => navigation.navigate("Nueva ficha")}
+        onPress={() => navigation.navigate("Nueva Venta")}
         visible={visible}
         animateFrom={"right"}
         //

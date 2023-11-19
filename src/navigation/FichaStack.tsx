@@ -8,9 +8,9 @@ const Stack = createNativeStackNavigator();
 
 export default function FichaStack() {
   return (
-    <Stack.Navigator initialRouteName="Lista de fichas">
-      <Stack.Screen name="Lista de fichas" component={FichaScreen} />
-      <Stack.Screen name="Nueva ficha" component={FichaCreateScreen} />
+    <Stack.Navigator initialRouteName="Lista de Ventas">
+      <Stack.Screen name="Lista de Ventas" component={FichaScreen} />
+      <Stack.Screen name="Nueva Venta" component={FichaCreateScreen} />
       <Stack.Screen name="Editar persona" component={PersonaEditScreen} />
     </Stack.Navigator>
   );
