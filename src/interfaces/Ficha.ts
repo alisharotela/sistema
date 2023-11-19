@@ -5,7 +5,7 @@ import { Reserva } from "./Reserva";
 export interface Ficha {
   idFicha: number;
   paciente: Paciente;
-  doctor: Paciente;
+  cliente: Paciente;
   fecha: string;
   numero_factura: string;
   cantidad: string;
@@ -16,7 +16,7 @@ export interface Ficha {
 export interface FichaCreate {
   idFicha?: number;
   paciente: string;
-  doctor: string;
+  cliente: string;
   fecha: string;
   numero_factura: string;
   cantidad: string;
@@ -27,7 +27,7 @@ export interface FichaCreate {
 export interface FiltroFicha {
   idFicha?: number;
   paciente?: number;
-  doctor?: number;
+  cliente?: number;
   fechaInicio?: string;
   fechaFin?: string;
   numero_factura?: string;

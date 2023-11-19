@@ -1,6 +1,7 @@
 import { Paciente } from "./Paciente";
 
 export interface Reserva {
+  precio: any;
   idReserva: number;
   fecha: string;
   hora: string;

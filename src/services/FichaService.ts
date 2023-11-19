@@ -10,7 +10,6 @@ class FichaService {
     const fichas = JSON.parse(await AsyncStorage.getItem("fichas")) || [];
     return fichas.find((element) => element.idFicha === id);
   }
-
   async getFichas(filtros: FiltroFicha) {
     const fichas = (JSON.parse(await AsyncStorage.getItem("fichas")) ||
       []) as Ficha[];
@@ -52,7 +51,7 @@ class FichaService {
       }
       if (key === "doctor") {
         fichasFiltradas = fichasFiltradas.filter(
-          (element) => element.doctor.idPersona === filtros[key]
+          (element) => element.cliente.idPersona === filtros[key]
         );
         continue;
       }
@@ -81,19 +80,18 @@ class FichaService {
     await AsyncStorage.setItem("fichas", JSON.stringify(fichas));
     return ficha;
   }
-
   async createFicha(p: FichaCreate) {
     const fichas = JSON.parse(await AsyncStorage.getItem("fichas")) || [];
     const idFicha = fichas.length + 1;
     const paciente = await PacienteService.getPaciente(p.paciente);
-    const doctor = await PacienteService.getPaciente(p.doctor);
+    const cliente = await PacienteService.getPaciente(p.cliente);
     const categoria = await CategoriaService.getCategoria(p.categoria);
     const reserva = await ReservaService.getReserva(p.reserva);
 
     const newFicha: Ficha = {
       idFicha,
       paciente,
-      doctor,
+      cliente,
       fecha: p.fecha,
       numero_factura: p.numero_factura,
       cantidad: p.cantidad,

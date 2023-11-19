@@ -106,6 +106,7 @@ const VentaScreen = ({
         {fichas.lista.map((ficha, i) => (
           <ListItem
             key={i}
+            idFicha={`ID Venta: ${ficha.idFicha}`} // Añade el idFicha aquí
             label4="Fecha Venta:"
             text4={formatDate(ficha.fecha)}
             label5="Categoria:"
@@ -113,7 +114,7 @@ const VentaScreen = ({
             label6="Numero de Factura:"
             text6={ficha.numero_factura}
             label1={"Cliente"}
-            text1={ficha.doctor?.nombre + " " + ficha.doctor?.apellido}
+            text1={ficha.cliente?.nombre + " " + ficha.cliente?.apellido}
             label2={"Paciente:"}
             text2={ficha.paciente?.nombre + " " + ficha.paciente?.apellido}
             label3={"Cantidad:"}
