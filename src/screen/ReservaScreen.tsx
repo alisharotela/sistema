@@ -59,7 +59,7 @@ const ReservaScreen = ({
     refetch,
   } = useQuery({
     queryKey: ["reservas", filters],
-    queryFn: () => ReservaService.getReservas(filters),
+    queryFn: () => ReservaService.getReservas(),
     initialData: { lista: [], totalDatos: 0 } as listadatos<Reserva>,
   });
 
@@ -67,17 +67,6 @@ const ReservaScreen = ({
     <>
       {/* <SafeAreaView></SafeAreaView> */}
       <SafeAreaView style={styles.container}>
-        <ReservaModal filters={filters}>
-          <ReservaFiltros
-            initialValues={filters}
-            onReset={() => {
-              setFilters(initialFilters);
-            }}
-            onFilter={(filters) => {
-              setFilters(filters);
-            }}
-          />
-        </ReservaModal>
         <ScrollView
           onScroll={onScroll}
           refreshControl={
@@ -92,48 +81,27 @@ const ReservaScreen = ({
           style={{ flex: 1 }}
         >
           {!isLoading && reservas.lista.length == 0 && (
-            <Text style={{ textAlign: "center" }}>No hay reservas</Text>
+            <Text style={{ textAlign: "center" }}>No hay productos</Text>
           )}
           {reservas.lista.map((reserva, i) => (
             <ListItem
               key={i}
-              text4={formatDate(reserva.fecha)}
-              text5={reserva.hora}
-              text6={reserva.estado}
-              text1={reserva.doctor?.nombre + " " + reserva.doctor?.apellido}
-              text2={
-                reserva.paciente?.nombre + " " + reserva.paciente?.apellido
-              }
-              IconSection={
-                <>
-                  <IconButton
-                    onPress={() =>
-                      createTwoButtonAlert({
-                        onConfirm: async () => {
-                          await ReservaService.cancelarReserva(
-                            reserva.idReserva
-                          );
-                          queryClient.invalidateQueries({
-                            queryKey: ["reservas", filters],
-                          });
-                        },
-                      })
-                    }
-                    icon="cancel"
-                    iconColor="red"
-                    disabled={reserva.estado == "Cancelada"}
-                  />
-                </>
-              }
-            />
+              label4={"Producto:"}
+              text4={reserva.nombre}
+              label1={"Codigo:"}
+              text1={reserva.codigo}
+              label5={"Precio:"}
+              text5={reserva.precio?.toString()}
+              label2={"Categoria:"}
+              text2={reserva.categoria?.descripcion} IconSection={undefined}            />
           ))}
           <View style={{ height: 78 }}></View>
         </ScrollView>
         <AnimatedFAB
           icon={"plus"}
-          label={"Nueva reserva"}
+          label={"Nuevo producto"}
           extended={isExtended}
-          onPress={() => navigation.navigate("Nueva reserva")}
+          onPress={() => navigation.navigate("Nuevo producto")}
           visible={visible}
           animateFrom={"right"}
           style={[styles.fabStyle, style, fabStyle]}

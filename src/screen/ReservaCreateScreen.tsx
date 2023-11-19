@@ -19,14 +19,14 @@ import ReservaService from "../services/ReservaService";
 import { FormButton } from "../components/FormButton";
 import { DatePicker } from "../components/DatePicker";
 import { useQueryClient } from "@tanstack/react-query";
+import { Categoria } from "../interfaces/Categoria";
+import { CategoriaSelect } from "../components/CategoriaSelect";
 
 const initialValues = {
-  fecha: new Date().toISOString(),
-  precio: "",
-  paciente: "",
-  doctor: undefined,
-  estado: "activo",
+  precio: 0,
   nombre: "",
+  categoria: undefined,
+  codigo: "",
 };
 export default function ReservaCreateScreen() {
   const navigation = useNavigation();
@@ -34,11 +34,9 @@ export default function ReservaCreateScreen() {
   const { values, setValues, handleChange, handleSubmit } = useFormik({
     initialValues,
     onSubmit: async (values) => {
-      await ReservaService.createReserva;
+      await ReservaService.createReserva(values);
       queryClient.invalidateQueries({ queryKey: ["reservas"] });
       navigation.goBack();
-      precio: values.precio;
-      nombre: values.nombre
     },
   });
   const isIOs = Platform.OS === "ios";
@@ -56,32 +54,27 @@ export default function ReservaCreateScreen() {
     >
       <ScrollView>
         <View style={styles.container}>
-          <DatePicker
-            value={values.fecha}
-            onChange={(value) => setValues({ ...values, fecha: value })}
-            label="Fecha"
-          />
+            <TextInput
+              value={values.nombre}
+              label="Nombre del Producto" //Hora = Precio
+              onChangeText={handleChange("nombre")}
+            />
           <TextInput
-            value={values.precio}
+            value={values.precio.toString()}
             label="Precio" //Hora = Precio
-            onChangeText={handleChange("descripcion")}
+            keyboardType="numeric"
+            onChangeText={handleChange("precio")}
           />
-          <TextInput
-            value={values.nombre}
-            label="Nombre del Producto" //Hora = Precio
-            onChangeText={handleChange("descripcion")}
-          />
-          <DoctorSelect
-            value={values.doctor}
+          <CategoriaSelect
+            value={values.categoria}
             onChange={(id) => {
-              setValues({ ...values, doctor: id });
+              setValues({ ...values, categoria: id });
             }}
           />
-          <PacienteSelect
-            value={values.paciente}
-            onChange={(id) => {
-              setValues({ ...values, paciente: id });
-            }}
+           <TextInput
+            value={values.codigo}
+            label="Codigo del producto" //Hora = Precio
+            onChangeText={handleChange("codigo")}
           />
           <FormButton
             goBack={navigation.goBack}
