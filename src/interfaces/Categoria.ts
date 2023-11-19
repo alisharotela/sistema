@@ -1,9 +1,9 @@
 export interface Categoria {
   idCategoria: number;
-  descripcion: string;
+  nombre: string;
 }
 
 export interface CategoriaCreate{
   idCategoria?: number;
-  descripcion: string
+  nombre: string
 }

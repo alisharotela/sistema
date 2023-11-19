@@ -93,7 +93,7 @@ const ReservaScreen = ({
               label3={"Precio:"}
               text3={reserva.precio?.toString()}
               label4={"Categoria:"}
-              text4={reserva.categoria?.descripcion} IconSection={undefined}            />
+              text4={reserva.categoria?.nombre} IconSection={undefined}            />
           ))}
           <View style={{ height: 78 }}></View>
         </ScrollView>

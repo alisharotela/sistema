@@ -20,7 +20,7 @@ export function CategoriaSelect({ value, onChange }) {
       label="Categoria"
       onChange={onChange}
       items={categorias.lista?.map((categoria) => ({
-        label: `${categoria.descripcion}`,
+        label: `${categoria.nombre}`,
         value: categoria.idCategoria.toString(),
       }))}
     />

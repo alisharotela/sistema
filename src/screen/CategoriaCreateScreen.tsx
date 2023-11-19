@@ -15,7 +15,7 @@ import CategoriaService from "../services/CategoriaService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const initialValues = {
-  descripcion: ''
+  nombre: ''
 };
 export default function CategoriaCreateScreen() {
   const navigation = useNavigation();
@@ -54,9 +54,9 @@ export default function CategoriaCreateScreen() {
       <ScrollView>
         <View style={styles.container}>
           <TextInput
-            value={values.descripcion}
-            label="Descripción"
-            onChangeText={handleChange("descripcion")}
+            value={values.nombre}
+            label="Nombre"
+            onChangeText={handleChange("nombre")}
           />
 
           <FormButton

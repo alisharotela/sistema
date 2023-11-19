@@ -30,7 +30,7 @@ export default function CategoriaEditScreen(props) {
   const { values, handleChange, handleSubmit } = useFormik({
     initialValues: {
       idCategoria: idCategoria,
-      descripcion: categoria?.descripcion
+      nombre: categoria?.nombre
     },
     onSubmit: async (values) => mutate(values, {
       onSuccess: () => {
@@ -42,9 +42,9 @@ export default function CategoriaEditScreen(props) {
 return (
   <View style={styles.container}>
     <TextInput
-      value={values.descripcion}
-      label="Descripción"
-      onChangeText={handleChange("descripcion")}
+      value={values.nombre}
+      label="Nombre"
+      onChangeText={handleChange("nombre")}
     />
     <FormButton
       goBack={navigation.goBack}

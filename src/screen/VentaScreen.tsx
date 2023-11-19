@@ -110,7 +110,7 @@ const VentaScreen = ({
             label4="Fecha Venta:"
             text4={formatDate(ficha.fecha)}
             label5="Categoria:"
-            text5={ficha.categoria?.descripcion}
+            text5={ficha.categoria?.nombre}
             label6="Numero de Factura:"
             text6={ficha.numero_factura}
             label1={"Cliente"}
@@ -229,7 +229,7 @@ const exportData = (data) =>
             fecha: d.fecha,
             numero_factura: d.numero_factura,
             cantidad: d.cantidad,
-            categoria: d.categoria?.descripcion,
+            categoria: d.categoria?.nombre,
           }))
         ),
       // style: "default",

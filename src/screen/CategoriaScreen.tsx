@@ -57,7 +57,7 @@ const CategoriaScreen = ({ visible, animateFrom, style }) => {
           <ListItem
             key={categoria.idCategoria}
             text1={categoria.idCategoria.toString()}
-            text2={categoria.descripcion}
+            text2={categoria.nombre}
             IconSection={
               <>
                 <IconButton
