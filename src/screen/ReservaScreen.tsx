@@ -86,14 +86,14 @@ const ReservaScreen = ({
           {reservas.lista.map((reserva, i) => (
             <ListItem
               key={i}
-              label4={"Producto:"}
-              text4={reserva.nombre}
-              label1={"Codigo:"}
-              text1={reserva.codigo}
-              label5={"Precio:"}
-              text5={reserva.precio?.toString()}
-              label2={"Categoria:"}
-              text2={reserva.categoria?.descripcion} IconSection={undefined}            />
+              label1={"Producto:"}
+              text1={reserva.nombre}
+              label2={"Codigo:"}
+              text2={reserva.codigo}
+              label3={"Precio:"}
+              text3={reserva.precio?.toString()}
+              label4={"Categoria:"}
+              text4={reserva.categoria?.descripcion} IconSection={undefined}            />
           ))}
           <View style={{ height: 78 }}></View>
         </ScrollView>

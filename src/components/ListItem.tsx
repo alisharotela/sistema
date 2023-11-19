@@ -54,15 +54,17 @@ export const ListItem = ({
         <View style={styles.row}>
           <Text style={styles.label}>{label4}</Text>
           <Text style={styles.text}>{text4}</Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.label}>{label5}</Text>
-          <Text style={styles.text}>{text5}</Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.label}>{label6}</Text>
-          <Text style={styles.text}>{text6}</Text>
-        </View>
+        </View>{
+          text5 &&
+          <View style={styles.row}>
+            <Text style={styles.label}>{label5}</Text>
+            <Text style={styles.text}>{text5}</Text>
+          </View>}{
+          text6 &&
+          <View style={styles.row}>
+            <Text style={styles.label}>{label6}</Text>
+            <Text style={styles.text}>{text6}</Text>
+          </View>}
       </View>
       <View style={styles.icons}>
         {IconSection}
