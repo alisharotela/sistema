@@ -93,7 +93,7 @@ const PersonaScreen = ({
             text2={persona.apellido}
             text3={persona.email}
             text4={persona.telefono}
-            text5={persona.flag_es_doctor ? "Doctor" : "Paciente"}
+            text5={persona.flag_es_doctor ? "Cliente" : "Cliente"}
             IconSection={
               <>
                 <IconButton

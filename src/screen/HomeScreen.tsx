@@ -5,7 +5,7 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <Image source={require('../icons/fotohome.jpg')} style={styles.image}/>
-      <Text style={styles.text}>Bienvenidos al sistema de seguimiento de pacientes</Text>
+      <Text style={styles.text}>Bienvenidos al Sistema de ventas de productos</Text>
     </View>
   );
 }

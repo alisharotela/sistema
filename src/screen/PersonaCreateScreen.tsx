@@ -20,7 +20,7 @@ const initialValues = {
   tel: "",
   ci: "",
   email: "",
-  tipoPersona: null,
+  rol: null,// rol = tipopersona
 };
 export default function PersonaCreateScreen() {
   const navigation = useNavigation();
@@ -33,7 +33,7 @@ export default function PersonaCreateScreen() {
         telefono: values.tel,
         email: values.email,
         cedula: values.ci,
-        flag_es_doctor: values.tipoPersona == "doctor" ? true : false,
+        flag_es_doctor: values.rol == "cliente" ? true : false,
       });
       navigation.goBack();
     },
@@ -64,15 +64,15 @@ export default function PersonaCreateScreen() {
             label="Apellido"
             onChangeText={handleChange("apellido")}
           />
-          <TextInput
+          {/*<TextInput
             value={values.tel}
             label="Teléfono"
             onChangeText={handleChange("tel")}
             keyboardType="phone-pad"
-          />
+    />*/}
           <TextInput
             value={values.ci}
-            label="Cédula de identidad"
+            label="Ruc"
             onChangeText={handleChange("ci")}
             keyboardType="phone-pad"
           />
@@ -83,12 +83,12 @@ export default function PersonaCreateScreen() {
             keyboardType="email-address"
           />
           <SelectInput
-            value={values.tipoPersona}
+            value={values.rol}
             label="Tipo de persona"
-            onChange={handleChange("tipoPersona")}
+            onChange={handleChange("rol")}
             items={[
-              { label: "Paciente", value: "paciente" },
-              { label: "Doctor", value: "doctor" },
+              { label: "Cliente", value: "cliente" },
+              { label: "Cliente", value: "cliente" },
             ]}
           />
 

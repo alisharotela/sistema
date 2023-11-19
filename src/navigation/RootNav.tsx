@@ -38,7 +38,7 @@ export default function RootNav() {
         <Tab.Screen
           name="Tab Personas"
           options={{
-            tabBarLabel: "Personas",
+            tabBarLabel: "Clientes",
             tabBarIcon: () => <PersonIcon height={29} width={29} />,
           }}
           component={PersonaStack}
@@ -47,7 +47,7 @@ export default function RootNav() {
           name="Tab Reservas"
           component={ReservaStack}
           options={{
-            tabBarLabel: "Reservas",
+            tabBarLabel: "Productos",
             tabBarIcon: () => <CheckFileIcon height={24} width={24} />,
           }}
         />
@@ -71,7 +71,7 @@ export default function RootNav() {
           name="Tab Fichas"
           component={FichaStack}
           options={{
-            tabBarLabel: "Fichas",
+            tabBarLabel: "Ventas",
             tabBarIcon: () => <TicketIcon height={24} width={24} />,
           }}
         />

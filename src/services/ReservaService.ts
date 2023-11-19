@@ -45,9 +45,9 @@ class ReservaService {
         );
         continue;
       }
-      if (key === "hora") {
+      if (key === "precio") {
         reservasFiltradas = reservasFiltradas.filter(
-          (element) => element.hora === filtros[key]
+          (element) => element.precio === filtros[key]
         );
         continue;
       }
@@ -109,7 +109,7 @@ class ReservaService {
     const paciente = await PacienteService.getPaciente(p.paciente);
     const doctor = await PacienteService.getPaciente(p.doctor);
     reserva.fecha = p.fecha;
-    reserva.hora = p.hora;
+    reserva.precio = p.precio;
     reserva.paciente = paciente;
     reserva.doctor = doctor;
 

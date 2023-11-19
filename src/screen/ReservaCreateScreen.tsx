@@ -22,10 +22,11 @@ import { useQueryClient } from "@tanstack/react-query";
 
 const initialValues = {
   fecha: new Date().toISOString(),
-  hora: "",
+  precio: "",
   paciente: "",
   doctor: undefined,
   estado: "activo",
+  nombre: "",
 };
 export default function ReservaCreateScreen() {
   const navigation = useNavigation();
@@ -33,9 +34,11 @@ export default function ReservaCreateScreen() {
   const { values, setValues, handleChange, handleSubmit } = useFormik({
     initialValues,
     onSubmit: async (values) => {
-      await ReservaService.createReserva(values);
+      await ReservaService.createReserva;
       queryClient.invalidateQueries({ queryKey: ["reservas"] });
       navigation.goBack();
+      precio: values.precio;
+      nombre: values.nombre
     },
   });
   const isIOs = Platform.OS === "ios";
@@ -58,11 +61,15 @@ export default function ReservaCreateScreen() {
             onChange={(value) => setValues({ ...values, fecha: value })}
             label="Fecha"
           />
-          <SelectInput
-            value={values.hora}
-            label="Horario"
-            onChange={handleChange("hora")}
-            items={createHoras()}
+          <TextInput
+            value={values.precio}
+            label="Precio" //Hora = Precio
+            onChangeText={handleChange("descripcion")}
+          />
+          <TextInput
+            value={values.nombre}
+            label="Nombre del Producto" //Hora = Precio
+            onChangeText={handleChange("descripcion")}
           />
           <DoctorSelect
             value={values.doctor}
@@ -97,11 +104,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const createHoras = () => {
+{/*const createHoras = () => {
   const horas: { value: string; label: string }[] = [];
   for (let i = 9; i < 21; i++) {
     const option = i + ":00 a " + (i + 1) + ":00";
     horas.push({ label: option, value: option });
   }
   return horas;
-};
+};*/}

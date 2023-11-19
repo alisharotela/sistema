@@ -12,7 +12,7 @@ import { FormButton } from "../components/FormButton";
 const initialValues1 = {
   nombre: "",
   apellido: "",
-  tel: "",
+  //tel: "",
   ci: "",
   email: "",
   tipoPersona: null,
@@ -30,10 +30,10 @@ export default function PersonaEditScreen(props) {
       setinitialValues({
         nombre: paciente.nombre,
         apellido: paciente.apellido,
-        tel: paciente.telefono,
+        //tel: paciente.telefono,
         ci: paciente.cedula,
         email: paciente.email,
-        tipoPersona: paciente.flag_es_doctor ? "doctor" : "paciente",
+        tipoPersona: paciente.flag_es_doctor ? "cliente" : "cliente",
       });
     };
     getPaciente();
@@ -50,7 +50,7 @@ export default function PersonaEditScreen(props) {
         telefono: values.tel,
         email: values.email,
         cedula: values.ci,
-        flag_es_doctor: values.tipoPersona == "doctor" ? true : false,
+        flag_es_doctor: values.tipoPersona == "cliente" ? true : false,
       });
       navigation.goBack();
     },
@@ -68,15 +68,15 @@ export default function PersonaEditScreen(props) {
         label="Apellido"
         onChangeText={handleChange("apellido")}
       />
-      <TextInput
+      {/*<TextInput
         value={values.tel}
         label="Teléfono"
         onChangeText={handleChange("tel")}
         keyboardType="phone-pad"
-      />
+  />*/}
       <TextInput
         value={values.ci}
-        label="Cédula de identidad"
+        label="Ruc"
         onChangeText={handleChange("ci")}
         keyboardType="phone-pad"
       />
@@ -91,8 +91,8 @@ export default function PersonaEditScreen(props) {
         label="Tipo de persona"
         onChange={handleChange("tipoPersona")}
         items={[
-          { label: "Paciente", value: "paciente" },
-          { label: "Doctor", value: "doctor" },
+          { label: "Cliente", value: "cliente" },
+          { label: "CLiente", value: "cliente" },
         ]}
       />
       <FormButton
