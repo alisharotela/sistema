@@ -19,7 +19,7 @@ export function PacienteSelect({ value, onChange }) {
   return (
     <SelectInput
       value={value}
-      label="Paciente"
+      label="Cliente"
       onChange={onChange}
       items={pacientes.lista?.map((paciente) => ({
         label: paciente.nombre,

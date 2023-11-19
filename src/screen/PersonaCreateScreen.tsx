@@ -82,15 +82,6 @@ export default function PersonaCreateScreen() {
             onChangeText={handleChange("email")}
             keyboardType="email-address"
           />
-          <SelectInput
-            value={values.rol}
-            label="Tipo de persona"
-            onChange={handleChange("rol")}
-            items={[
-              { label: "Cliente", value: "cliente" },
-              { label: "Cliente", value: "cliente" },
-            ]}
-          />
 
           <FormButton
             goBack={navigation.goBack}

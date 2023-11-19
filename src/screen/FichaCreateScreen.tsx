@@ -71,11 +71,7 @@ export default function FichaCreateScreen() {
           }
           
           />
-          <TextInput
-            value={values.numero_factura}
-            label="Motivo de consulta"
-            onChangeText={handleChange("numero_factura")}
-          />
+         
           <TextInput
             value={values.cantidad}
             label="Cantidad"
@@ -87,12 +83,7 @@ export default function FichaCreateScreen() {
               setValues({ ...values, paciente: id });
             }}
           />
-          <DoctorSelect
-            value={values.doctor}
-            onChange={(id) => {
-              setValues({ ...values, doctor: id });
-            }}
-          />
+
           <CategoriaSelect
             value={values.categoria}
             onChange={(id) => {
