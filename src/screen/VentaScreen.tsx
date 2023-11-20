@@ -39,6 +39,7 @@ import { writeExcel, writePDF } from "../excel";
 export const initialFilters = {
   doctor: null,
   paciente: null,
+  cliente: null,
   categoria: null,
   fechaInicio: null,
   fechaFin: null,
@@ -77,19 +78,10 @@ const VentaScreen = ({
     initialData: { lista: [], totalDatos: 0 } as listadatos<Ficha>,
   });
 
+  
   return (
     <SafeAreaView style={styles.container}>
-      <FichaModal filters={filters}>
-        <FichaFiltros
-          initialValues={filters}
-          onReset={() => {
-            setFilters(initialFilters);
-          }}
-          onFilter={(filters) => {
-            setFilters(filters);
-          }}
-        />
-      </FichaModal>
+      
       <ScrollView
         onScroll={onScroll}
         refreshControl={
@@ -107,35 +99,16 @@ const VentaScreen = ({
           <ListItem
             key={i}
             idFicha={`ID Venta: ${ficha.idFicha}`} // Añade el idFicha aquí
-            label4="Fecha Venta:"
-            text4={formatDate(ficha.fecha)}
-            label5="Categoria:"
-            text5={ficha.categoria?.nombre}
-            label6="Numero de Factura:"
-            text6={ficha.numero_factura}
-            label1={"Cliente"}
-            text1={ficha.cliente?.nombre + " " + ficha.cliente?.apellido}
-            label2={"Paciente:"}
-            text2={ficha.paciente?.nombre + " " + ficha.paciente?.apellido}
-            label3={"Cantidad:"}
-            text3={ficha.cantidad}
-            IconSection={
-              <>
-                <IconButton
-                  onPress={() =>
-                    createTwoButtonAlert({
-                      onConfirm: async () => {
-                        await FichaService.delFicha(ficha.idFicha);
-                        queryClient.invalidateQueries({
-                          queryKey: ["fichas", filters],
-                        });
-                      },
-                    })
-                  }
-                  icon={() => <DeleteIcon width={24} height={24} />}
-                />
-              </>
-            }
+            label1="Fecha Venta:"
+            text1={formatDate(ficha.fecha)}
+            label2="Categoria:"
+            text2={ficha.categoria?.nombre}
+            label3="Total:"
+            text3={ficha.total.toString()}
+            label4={"Cliente:"}
+            text4={ficha.paciente?.nombre} IconSection={undefined}
+            label5={"Numero de Factura:"}
+            text5={ficha.numeroFactura}
           />
         ))}
         <View style={{ height: 78 }}></View>
@@ -227,7 +200,7 @@ const exportData = (data) =>
             paciente: d.paciente?.nombre + " " + d.paciente?.apellido,
             doctor: d.doctor?.nombre + " " + d.doctor?.apellido,
             fecha: d.fecha,
-            numero_factura: d.numero_factura,
+            numeroFactura: d.numerFactura,
             cantidad: d.cantidad,
             categoria: d.categoria?.nombre,
           }))

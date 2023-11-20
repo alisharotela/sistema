@@ -19,8 +19,6 @@ export interface ReservaCreate {
   categoria: string;
   nombre: string;
   precio: number;
-
-
 }
 
 export interface FiltroReserva {
@@ -34,6 +32,4 @@ export interface FiltroReserva {
   codigo?: string;
   nombre?: string;
   precio: number;
-
-
 }

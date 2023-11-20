@@ -49,18 +49,13 @@ class FichaService {
         );
         continue;
       }
-      if (key === "doctor") {
-        fichasFiltradas = fichasFiltradas.filter(
-          (element) => element.cliente.idPersona === filtros[key]
-        );
-        continue;
-      }
       if (key === "categoria") {
         fichasFiltradas = fichasFiltradas.filter(
           (element) => element.categoria.idCategoria === filtros[key]
         );
         continue;
       }
+      
     }
 
     return {
@@ -84,19 +79,19 @@ class FichaService {
     const fichas = JSON.parse(await AsyncStorage.getItem("fichas")) || [];
     const idFicha = fichas.length + 1;
     const paciente = await PacienteService.getPaciente(p.paciente);
-    const cliente = await PacienteService.getPaciente(p.cliente);
+    const cliente = await PacienteService.getPaciente(p.paciente);
     const categoria = await CategoriaService.getCategoria(p.categoria);
     const reserva = await ReservaService.getReserva(p.reserva);
 
     const newFicha: Ficha = {
       idFicha,
       paciente,
-      cliente,
       fecha: p.fecha,
-      numero_factura: p.numero_factura,
+      numeroFactura: p.numeroFactura,
       cantidad: p.cantidad,
       categoria,
       reserva,
+      total: p.total
     };
     fichas.push(newFicha);
     console.log({ newFicha });

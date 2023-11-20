@@ -38,7 +38,7 @@ export const ListItem = ({
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        {idFicha && <Text style={styles.idFicha}>{`ID Venta: ${idFicha}`}</Text>}
+        {idFicha && <Text style={styles.idFicha}>{`${idFicha}`}</Text>}
         <View style={styles.row}>
           <Text style={styles.label}>{label1}</Text>
           <Text style={styles.text}>{text1}</Text>

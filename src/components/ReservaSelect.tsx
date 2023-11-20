@@ -12,16 +12,30 @@ export function ReservaSelect({ value, onChange }) {
     queryFn: () => ReservaService.getReservas(),
     initialData: { lista: [], totalDatos: 0 } as listadatos<Reserva>,
   });
+var Text
+  if (isLoading) {
+    return <Text>Cargando reservas...</Text>;
+  }
+
+  const handleChange = (itemValue) => {
+    // Encuentra la reserva seleccionada basada en el ID
+    const reservaSeleccionada = reservas.lista.find(r => r.idReserva.toString() === itemValue);
+    // Invoca el callback onChange con toda la información de la reserva
+    onChange(reservaSeleccionada);
+  };
+
+  // Mapea las reservas para el SelectInput
+  const options = reservas.lista.map((reserva) => ({
+    label: `${reserva.nombre} - Precio: ${reserva.precio}`,
+    value: reserva.idReserva.toString(),
+  }));
 
   return (
     <SelectInput
       value={value}
-      label="Reserva"
-      onChange={onChange}
-      items={reservas.lista?.map((reserva) => ({
-        label: `${formatDate(reserva.fecha)}-${reserva.hora}`,
-        value: reserva.idReserva.toString(),
-      }))}
+      label="Pedido"
+      onChange={handleChange}
+      items={options}
     />
   );
 }

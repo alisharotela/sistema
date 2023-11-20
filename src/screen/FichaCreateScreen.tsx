@@ -25,12 +25,13 @@ import { CategoriaSelect } from "../components/CategoriaSelect";
 
 const initialValues = {
   fecha: new Date().toISOString(),
-  reserva: undefined,
-  numero_factura: "",
-  cantidad: "",
-  paciente: undefined,
-  doctor: undefined,
+  pedido: undefined,
+  numeroFactura: "",
+  cantidad: 0,
+  cliente: undefined,
   categoria: undefined,
+  total:0,
+  paciente: undefined,
 };
 export default function FichaCreateScreen() {
   const navigation = useNavigation();
@@ -43,7 +44,17 @@ export default function FichaCreateScreen() {
       navigation.goBack();
     },
   });
+  // Función para actualizar el precio total cuando cambia el producto o la cantidad
+  
   const isIOs = Platform.OS === "ios";
+  function updateTotal(value: any, precio: any) {
+    throw new Error("Function not implemented.");
+  }
+
+  function setFieldValue(arg0: string, value: any) {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <KeyboardAvoidingView
       style={{
@@ -63,19 +74,23 @@ export default function FichaCreateScreen() {
             onChange={(value) => setValues({ ...values, fecha: value })}
             label="Fecha"
           />
-          <ReservaSelect
-            value={values.reserva}
-            onChange={(id) => {
-              setValues({ ...values, reserva: id });
-            }
-          }
-          
-          />
-         
           <TextInput
-            value={values.cantidad}
-            label="Cantidad"
-            onChangeText={handleChange("Cantidad")}
+            value={values.cantidad.toString()}
+            label="Cantidad" //Hora = Precio
+            keyboardType="numeric"
+            onChangeText={handleChange("cantidad")}
+          />
+          <TextInput
+            value={values.numeroFactura}
+            label="Numero de Factura" //Hora = Precio
+            onChangeText={handleChange("numeroFactura")}
+          />
+          <ReservaSelect
+            value={values.pedido}
+            onChange={(reservaSeleccionada) => {
+            // Aquí estableces el ID de la reserva y actualizas el total basado en el precio de la reserva
+            setValues({ ...values, pedido: reservaSeleccionada.idReserva, total: reservaSeleccionada.precio * values.cantidad});
+            }}
           />
           <PacienteSelect
             value={values.paciente}
@@ -111,11 +126,3 @@ const styles = StyleSheet.create({
   },
 });
 
-const createHoras = () => {
-  const horas: { value: string; label: string }[] = [];
-  for (let i = 9; i < 21; i++) {
-    const option = i + ":00 a " + (i + 1) + ":00";
-    horas.push({ label: option, value: option });
-  }
-  return horas;
-};

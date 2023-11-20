@@ -3,35 +3,36 @@ import { Paciente } from "./Paciente";
 import { Reserva } from "./Reserva";
 
 export interface Ficha {
+  cantidad: number;
   idFicha: number;
   paciente: Paciente;
   cliente: Paciente;
   fecha: string;
-  numero_factura: string;
-  cantidad: string;
   categoria: Categoria;
-  reserva: Reserva;
+  pedido:Reserva
+  numeroFactura: string;
+  //detalles: DetalleVenta[]; // Usando la nueva interfaz DetalleVenta
+  total: number; // Este sería el total calculado de todos los DetalleVenta
 }
-
 export interface FichaCreate {
-  idFicha?: number;
+  pedido: string;
+  numeroFactura: string;
+  cantidad: number;
   paciente: string;
   cliente: string;
   fecha: string;
-  numero_factura: string;
-  cantidad: string;
   categoria: string;
-  reserva: string;
+  total: number;
 }
 
 export interface FiltroFicha {
   idFicha?: number;
   paciente?: number;
-  cliente?: number;
   fechaInicio?: string;
   fechaFin?: string;
-  numero_factura?: string;
+  numeroFactura?: string;
   cantidad?: string;
   categoria?: number;
   reserva?: number;
 }
+
