@@ -67,21 +67,18 @@ const VentaScreen = ({
   };
   const fabStyle = { [animateFrom]: 16 };
 
-  const [filters, setFilters] = useState(initialFilters);
   const {
     data: fichas,
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["fichas", filters],
-    queryFn: () => FichaService.getFichas(filters),
+    queryKey: ["fichas"],
+    queryFn: () => FichaService.getFichas(),
     initialData: { lista: [], totalDatos: 0 } as listadatos<Ficha>,
   });
 
-  
   return (
     <SafeAreaView style={styles.container}>
-      
       <ScrollView
         onScroll={onScroll}
         refreshControl={
@@ -93,7 +90,7 @@ const VentaScreen = ({
         style={{ flex: 1 }}
       >
         {!isLoading && fichas.lista.length == 0 && (
-          <Text style={{ textAlign: "center" }}>No hay fichas</Text>
+          <Text style={{ textAlign: "center" }}>No hay ventas</Text>
         )}
         {fichas.lista.map((ficha, i) => (
           <ListItem
@@ -104,11 +101,15 @@ const VentaScreen = ({
             label2="Categoria:"
             text2={ficha.categoria?.nombre}
             label3="Total:"
-            text3={ficha.total.toString()}
+            text3={ficha.total?.toString()}
             label4={"Cliente:"}
-            text4={ficha.paciente?.nombre} IconSection={undefined}
+            text4={ficha.cliente?.nombre}
+            IconSection={undefined}
             label5={"Numero de Factura:"}
             text5={ficha.numeroFactura}
+            label6={"Cantidad:"}
+            text6={ficha.cantidad.toString()}
+            
           />
         ))}
         <View style={{ height: 78 }}></View>
@@ -163,6 +164,7 @@ export default VentaScreen;
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+    paddingTop: 16,
   },
   fabStyle: {
     bottom: 16,
@@ -195,14 +197,13 @@ const exportData = (data) =>
       text: "Excel",
       onPress: () =>
         writeExcel(
-          data.map((d) => ({
-            idFicha: d.idFicha,
-            paciente: d.paciente?.nombre + " " + d.paciente?.apellido,
-            doctor: d.doctor?.nombre + " " + d.doctor?.apellido,
+          data.map((d: Ficha) => ({
+            numeroFactura: d.numeroFactura,
+            cliente: d.cliente?.nombre + " " + d.cliente?.apellido,
             fecha: d.fecha,
-            numeroFactura: d.numerFactura,
-            cantidad: d.cantidad,
             categoria: d.categoria?.nombre,
+            cantidad: d.cantidad,
+            total: d.total,
           }))
         ),
       // style: "default",

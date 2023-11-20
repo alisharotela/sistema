@@ -7,7 +7,7 @@ import {
   TextBase,
   View,
 } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import { TextInput } from "../components/TextInput";
 import { SelectInput } from "../components/SelectInput";
 import PacienteService from "../services/PacienteService";
@@ -27,11 +27,10 @@ const initialValues = {
   fecha: new Date().toISOString(),
   pedido: undefined,
   numeroFactura: "",
-  cantidad: 0,
+  cantidad: undefined,
   cliente: undefined,
   categoria: undefined,
-  total:0,
-  paciente: undefined,
+  total: undefined,
 };
 export default function FichaCreateScreen() {
   const navigation = useNavigation();
@@ -45,15 +44,8 @@ export default function FichaCreateScreen() {
     },
   });
   // Función para actualizar el precio total cuando cambia el producto o la cantidad
-  
-  const isIOs = Platform.OS === "ios";
-  function updateTotal(value: any, precio: any) {
-    throw new Error("Function not implemented.");
-  }
 
-  function setFieldValue(arg0: string, value: any) {
-    throw new Error("Function not implemented.");
-  }
+  const isIOs = Platform.OS === "ios";
 
   return (
     <KeyboardAvoidingView
@@ -75,7 +67,7 @@ export default function FichaCreateScreen() {
             label="Fecha"
           />
           <TextInput
-            value={values.cantidad.toString()}
+            value={values.cantidad?.toString()}
             label="Cantidad" //Hora = Precio
             keyboardType="numeric"
             onChangeText={handleChange("cantidad")}
@@ -86,16 +78,23 @@ export default function FichaCreateScreen() {
             onChangeText={handleChange("numeroFactura")}
           />
           <ReservaSelect
-            value={values.pedido}
+            value={values.pedido?.toString()}
             onChange={(reservaSeleccionada) => {
-            // Aquí estableces el ID de la reserva y actualizas el total basado en el precio de la reserva
-            setValues({ ...values, pedido: reservaSeleccionada.idReserva, total: reservaSeleccionada.precio * values.cantidad});
+              // Aquí estableces el ID de la reserva y actualizas el total basado en el precio de la reserva
+              const precio = reservaSeleccionada?.precio;
+              const total = precio * values.cantidad;
+              const pedido = reservaSeleccionada?.idReserva;
+              setValues({
+                ...values,
+                pedido: pedido,
+                total: total,
+              });
             }}
           />
           <PacienteSelect
-            value={values.paciente}
+            value={values.cliente}
             onChange={(id) => {
-              setValues({ ...values, paciente: id });
+              setValues({ ...values, cliente: id });
             }}
           />
 
@@ -105,6 +104,9 @@ export default function FichaCreateScreen() {
               setValues({ ...values, categoria: id });
             }}
           />
+          {values.total && !Number.isNaN(values.total) && (
+            <Text style={{ marginHorizontal: 16 }}>Total: {values.total}</Text>
+          )}
           <FormButton
             goBack={navigation.goBack}
             handleSubmit={handleSubmit}
@@ -125,4 +127,3 @@ const styles = StyleSheet.create({
     gap: 16,
   },
 });
-

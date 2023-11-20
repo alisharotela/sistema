@@ -10,7 +10,7 @@ export const writeExcel = async (data) => {
     type: "base64",
     bookType: "xlsx",
   });
-  const uri = FileSystem.cacheDirectory + "fichas.xlsx";
+  const uri = FileSystem.cacheDirectory + "factura.xlsx";
   await FileSystem.writeAsStringAsync(uri, wbout, {
     encoding: FileSystem.EncodingType.Base64,
   });
@@ -23,8 +23,9 @@ export const writeExcel = async (data) => {
 };
 
 import * as Print from "expo-print";
+import { Ficha } from "./interfaces/Ficha";
 
-export const writePDF = async (data) => {
+export const writePDF = async (data: Ficha) => {
   const uri = await Print.printToFileAsync({
     html: generateHTML(data),
   });
@@ -36,127 +37,81 @@ export const writePDF = async (data) => {
 };
 
 const generateHTML = (data) => {
-  return data
-    .map(
-      (ficha) => `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ficha Médica</title>
-  <style>
-  
-      body {
-          font-family: Arial, sans-serif;
-          margin: 40px;
-          page-break-after: always; /* Esto asegura que cada ficha esté en una página separada al imprimir */
-      }
-
-      .ficha {
-          border: 1px solid #e0e0e0;
-          border-radius: 5px;
-          padding: 20px;
-          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      h2 {
-          border-bottom: 2px solid #2196F3;
-          padding-bottom: 10px;
-          margin-bottom: 20px;
-      }
-
-      .info-group {
-          margin-bottom: 15px;
-      }
-
-      label {
-          font-weight: bold;
-      }
-
-      .data {
-          margin-left: 10px;
-          font-size: 0.9em;
-          color: #555;
-      }
-
-      .separator {
-          height: 1px;
-          background-color: #e0e0e0;
-          margin: 20px 0;
-      }
-
-  </style>
-</head>
-<body>
-
-<div class="ficha">
-  <h2>Ficha Médica</h2>
-
-  <div class="info-group">
-      <label>ID Ficha:</label>
-      <span class="data">${ficha.idFicha}</span>
-  </div>
-  <div class="info-group">
-      <label>Fecha:</label>
-      <span class="data">${new Date(ficha.fecha).toLocaleDateString()}</span>
-  </div>
-
-  <div class="separator"></div>
-
-  <h2>Paciente</h2>
-  <div class="info-group">
-      <label>Nombre:</label>
-      <span class="data">${ficha.paciente.nombre} ${
-        ficha.paciente.apellido
-      }</span>
-  </div>
-  <div class="info-group">
-      <label>Email:</label>
-      <span class="data">${ficha.paciente.email}</span>
-  </div>
-  <div class="info-group">
-      <label>Teléfono:</label>
-      <span class="data">${ficha.paciente.telefono}</span>
-  </div>
-
-  <div class="separator"></div>
-
-  <h2>Doctor</h2>
-  <div class="info-group">
-      <label>Nombre:</label>
-      <span class="data">${ficha.doctor.nombre} ${ficha.doctor.apellido}</span>
-  </div>
-  <div class="info-group">
-      <label>Email:</label>
-      <span class="data">${ficha.doctor.email}</span>
-  </div>
-  <div class="info-group">
-      <label>Teléfono:</label>
-      <span class="data">${ficha.doctor.telefono}</span>
-  </div>
-
-  <div class="separator"></div>
-
-  <div class="info-group">
-      <label>Motivo de Consulta:</label>
-      <span class="data">${ficha.numero_factura}</span>
-  </div>
-  <div class="info-group">
-      <label>Diagnóstico:</label>
-      <span class="data">${ficha.cantidad}</span>
-  </div>
-  <div class="info-group">
-      <label>Categoría:</label>
-      <span class="data">${ficha.categoria.descripcion}</span>
-  </div>
-
-</div>
-
-</body>
-</html>
-  `
-    )
-    .join("");
+  console.log({ data });
+  return `
+      <!DOCTYPE html>
+      <html lang="es">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Facturas</title>
+          <style>
+              body {
+                  font-family: Arial, sans-serif;
+                  margin: 0;
+                  padding: 0;
+                  background-color: #f4f4f4;
+              }
+              .container {
+                  width: 80%;
+                  margin: 20px auto;
+                  background: #fff;
+                  padding: 15px;
+                  border-radius: 5px;
+                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+              }
+              .factura {
+                  border-bottom: 1px solid #eee;
+                  padding-bottom: 10px;
+                  margin-bottom: 10px;
+              }
+              .factura:last-child {
+                  border-bottom: none;
+              }
+              .titulo {
+                  font-size: 24px;
+                  color: #333;
+                  margin-bottom: 10px;
+              }
+              .detalle, .total {
+                  font-size: 18px;
+                  color: #666;
+                  margin: 5px 0;
+              }
+              .total {
+                  font-weight: bold;
+              }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+              ${data
+                .map(
+                  (factura) => `
+                  <div class="factura">
+                      <div class="titulo">Factura Número: ${
+                        factura.numeroFactura
+                      }</div>
+                      <div class="detalle">Cliente: ${factura.cliente.nombre} ${
+                    factura.cliente.apellido
+                  }</div>
+                      <div class="detalle">Fecha: ${new Date(
+                        factura.fecha
+                      ).toLocaleDateString()}</div>
+                      <div class="detalle">Producto: ${
+                        factura.producto.nombre
+                      }</div>
+                      <div class="detalle">Cantidad: ${factura.cantidad}</div>
+                      <div class="detalle">Precio Unitario: $${
+                        factura.producto.precio
+                      }</div>
+                      <div class="total">Total: $${factura.total}</div>
+                  </div>
+              `
+                )
+                .join("")}
+          </div>
+      </body>
+      </html>
+    `;
 };

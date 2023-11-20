@@ -10,56 +10,12 @@ class FichaService {
     const fichas = JSON.parse(await AsyncStorage.getItem("fichas")) || [];
     return fichas.find((element) => element.idFicha === id);
   }
-  async getFichas(filtros: FiltroFicha) {
+  async getFichas() {
     const fichas = (JSON.parse(await AsyncStorage.getItem("fichas")) ||
       []) as Ficha[];
 
-    if (!filtros) {
-      return {
-        lista: fichas,
-        totalDatos: fichas.length,
-      };
-    }
-
-    let fichasFiltradas = fichas;
-    for (const key in filtros) {
-      if (!filtros[key]) continue;
-
-      if (key === "fechaInicio") {
-        fichasFiltradas = fichasFiltradas.filter(
-          (element) => new Date(element.fecha) >= new Date(filtros[key])
-        );
-        continue;
-      }
-      if (key === "fechaFin") {
-        fichasFiltradas = fichasFiltradas.filter(
-          (element) => new Date(element.fecha) <= new Date(filtros[key])
-        );
-        continue;
-      }
-      if (key === "fecha") {
-        fichasFiltradas = fichasFiltradas.filter((element) =>
-          isSameDate(element.fecha, filtros[key])
-        );
-        continue;
-      }
-      if (key === "paciente") {
-        fichasFiltradas = fichasFiltradas.filter(
-          (element) => element.paciente.idPersona === filtros[key]
-        );
-        continue;
-      }
-      if (key === "categoria") {
-        fichasFiltradas = fichasFiltradas.filter(
-          (element) => element.categoria.idCategoria === filtros[key]
-        );
-        continue;
-      }
-      
-    }
-
     return {
-      lista: fichasFiltradas,
+      lista: fichas,
       totalDatos: fichas.length,
     };
   }
@@ -78,20 +34,22 @@ class FichaService {
   async createFicha(p: FichaCreate) {
     const fichas = JSON.parse(await AsyncStorage.getItem("fichas")) || [];
     const idFicha = fichas.length + 1;
-    const paciente = await PacienteService.getPaciente(p.paciente);
-    const cliente = await PacienteService.getPaciente(p.paciente);
+    const cliente = await PacienteService.getPaciente(p.cliente);
     const categoria = await CategoriaService.getCategoria(p.categoria);
-    const reserva = await ReservaService.getReserva(p.reserva);
+    const pedido = await ReservaService.getReserva(p.pedido);
+    console.log(p);
+    console.log({ cliente, categoria, pedido });
 
     const newFicha: Ficha = {
       idFicha,
-      paciente,
+      cliente,
       fecha: p.fecha,
       numeroFactura: p.numeroFactura,
       cantidad: p.cantidad,
       categoria,
-      reserva,
-      total: p.total
+      pedido,
+      producto: pedido,
+      total: p.total,
     };
     fichas.push(newFicha);
     console.log({ newFicha });

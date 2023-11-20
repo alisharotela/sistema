@@ -5,6 +5,7 @@ import { SelectInput } from "./SelectInput";
 import { listadatos } from "../interfaces/Datos";
 import { Reserva } from "../interfaces/Reserva";
 import { formatDate } from "../utils";
+import { Text } from "react-native-paper";
 
 export function ReservaSelect({ value, onChange }) {
   const { data: reservas, isLoading } = useQuery({
@@ -12,14 +13,15 @@ export function ReservaSelect({ value, onChange }) {
     queryFn: () => ReservaService.getReservas(),
     initialData: { lista: [], totalDatos: 0 } as listadatos<Reserva>,
   });
-var Text
   if (isLoading) {
     return <Text>Cargando reservas...</Text>;
   }
 
   const handleChange = (itemValue) => {
     // Encuentra la reserva seleccionada basada en el ID
-    const reservaSeleccionada = reservas.lista.find(r => r.idReserva.toString() === itemValue);
+    const reservaSeleccionada = reservas.lista.find(
+      (r) => r.idReserva.toString() == itemValue
+    );
     // Invoca el callback onChange con toda la información de la reserva
     onChange(reservaSeleccionada);
   };
@@ -29,6 +31,7 @@ var Text
     label: `${reserva.nombre} - Precio: ${reserva.precio}`,
     value: reserva.idReserva.toString(),
   }));
+  console.log({ value });
 
   return (
     <SelectInput
