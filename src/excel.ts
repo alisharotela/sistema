@@ -10,7 +10,7 @@ export const writeExcel = async (data) => {
     type: "base64",
     bookType: "xlsx",
   });
-  const uri = FileSystem.cacheDirectory + "factura.xlsx";
+  const uri = FileSystem.cacheDirectory + "adjuntos.xlsx";
   await FileSystem.writeAsStringAsync(uri, wbout, {
     encoding: FileSystem.EncodingType.Base64,
   });
@@ -44,7 +44,7 @@ const generateHTML = (data) => {
       <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Facturas</title>
+          <title>Facturas/Inventario/Compras</title>
           <style>
               body {
                   font-family: Arial, sans-serif;

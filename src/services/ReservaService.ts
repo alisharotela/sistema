@@ -8,14 +8,23 @@ import CategoriaService from "./CategoriaService";
 
 
 class ReservaService {
+  getFicha(idProducto: number) {
+    throw new Error("Method not implemented.");
+  }
   async deleteAll() {
     await AsyncStorage.removeItem("reservas");
   }
+  //async getReserva(id) {
+    //const reservas = JSON.parse(await AsyncStorage.getItem("reservas")) || [];
+    //return reservas.find((element) => element.idReserva === id);
+  //}
   async getReserva(id) {
+    const idBusqueda = String(id); // o Number(id), dependiendo de cómo se almacenan
     const reservas = JSON.parse(await AsyncStorage.getItem("reservas")) || [];
-    return reservas.find((element) => element.idReserva === id);
+    return reservas.find((element) => String(element.idReserva) === idBusqueda);
   }
-
+  
+  
   async getReservas(filtros?: FiltroReserva) {
     const reservas: Reserva[] =
       JSON.parse(await AsyncStorage.getItem("reservas")) || [];
@@ -102,13 +111,13 @@ class ReservaService {
     const reserva = {} as Reserva;
     const reservas = JSON.parse(await AsyncStorage.getItem("reservas")) || [];
     const categoria = await CategoriaService.getCategoria(p.categoria);
-
+    
     reserva.precio = p.precio;
     reserva.nombre = p.nombre;
     reserva.idReserva = reservas.length + 1;
     reserva.codigo = p.codigo;
     reserva.categoria = categoria;
-
+    reserva.existencia = Number(p.existencia); // Convertir a número antes de guardar
     reservas.push(reserva);
     await AsyncStorage.setItem("reservas", JSON.stringify(reservas));
   }
@@ -118,6 +127,7 @@ class ReservaService {
     const arrayId = reservas.findIndex(
       (element) => element.idReserva === p.idReserva
     );
+    p.existencia = Number(p.existencia); // Asegúrate de convertir a número antes de actualizar
     if (arrayId === -1) {
       return false;
     }
@@ -125,6 +135,32 @@ class ReservaService {
     await AsyncStorage.setItem("reservas", JSON.stringify(reservas));
     return true;
   }
+
+  //Nuevo metodos
+  async venderProducto(idReserva: number, cantidadVendida: number): Promise<boolean> {
+    const reservas = JSON.parse(await AsyncStorage.getItem("reservas")) || [];
+    const index = reservas.findIndex((res: Reserva) => res.idReserva === idReserva);
+  
+    if (index === -1 || reservas[index].existencia < cantidadVendida) {
+      return false; // Indica que la venta no se pudo realizar
+    }
+  
+    reservas[index].existencia -= cantidadVendida;
+    await AsyncStorage.setItem("reservas", JSON.stringify(reservas));
+    return true; // Indica que la venta fue exitosa
+  }
+
+  // Método para aumentar la existencia cuando hay una compra
+  async comprarProducto(idReserva: number, cantidadComprada: number) {
+    const reservas = JSON.parse(await AsyncStorage.getItem("reservas")) || [];
+    const index = reservas.findIndex((res: Reserva) => res.idReserva === idReserva);
+
+    if (index !== -1) {
+      reservas[index].existencia += cantidadComprada;
+      await AsyncStorage.setItem("reservas", JSON.stringify(reservas));
+    }
+  }
+
 }
 
 export default new ReservaService();

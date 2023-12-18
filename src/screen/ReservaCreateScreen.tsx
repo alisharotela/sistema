@@ -27,6 +27,8 @@ const initialValues = {
   nombre: "",
   categoria: undefined,
   codigo: "",
+  existencia: 0,
+  idReserva:0
 };
 export default function ReservaCreateScreen() {
   const navigation = useNavigation();
@@ -75,6 +77,12 @@ export default function ReservaCreateScreen() {
             value={values.codigo}
             label="Codigo del producto" //Hora = Precio
             onChangeText={handleChange("codigo")}
+          />
+          <TextInput
+            value={values.existencia.toString()}
+            label="Stock del Producto" //Hora = Precio
+            keyboardType="numeric"
+            onChangeText={handleChange("existencia")}
           />
           <FormButton
             goBack={navigation.goBack}

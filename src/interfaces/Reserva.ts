@@ -2,6 +2,9 @@ import { Paciente } from "./Paciente";
 import { Categoria } from "./Categoria";
 
 export interface Reserva {
+  cantidad: any;
+  cliente: any;
+  numeroFactura: any;
   idReserva: number;
   fecha: string;
   hora: string;
@@ -11,6 +14,7 @@ export interface Reserva {
   categoria: Categoria;
   nombre: string;
   precio: number;
+  existencia: number;// Añadir este campo para controlar el inventario
 
 }
 export interface ReservaCreate {
@@ -19,6 +23,7 @@ export interface ReservaCreate {
   categoria: string;
   nombre: string;
   precio: number;
+  existencia: number;// Añadir este campo para controlar el inventario
 }
 
 export interface FiltroReserva {

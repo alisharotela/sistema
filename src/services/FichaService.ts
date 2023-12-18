@@ -37,6 +37,7 @@ class FichaService {
     const cliente = await PacienteService.getPaciente(p.cliente);
     const categoria = await CategoriaService.getCategoria(p.categoria);
     const pedido = await ReservaService.getReserva(p.pedido);
+
     console.log(p);
     console.log({ cliente, categoria, pedido });
 
@@ -53,6 +54,16 @@ class FichaService {
     };
     fichas.push(newFicha);
     console.log({ newFicha });
+    
+
+  // Obten la reserva asociada al producto
+  if (pedido.existencia < p.cantidad) {
+    throw new Error('No hay suficiente existencia para realizar la venta.');
+  }
+  
+  pedido.existencia -= p.cantidad; // Actualiza la existencia
+  await ReservaService.updateReserva(pedido); // Guarda los cambios
+  
 
     await AsyncStorage.setItem("fichas", JSON.stringify(fichas));
   }
